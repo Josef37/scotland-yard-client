@@ -1,26 +1,34 @@
 import React from "react";
-import logo from "./logo.svg";
+import Gameboard, { GameboardProps } from "./components/Gameboard";
+import { connect } from "react-redux";
 import "./App.css";
+import { IConnection } from "./reducers";
+import {
+  clickStation,
+  clickConnection,
+  clickPiece,
+  clickCommit
+} from "./actions";
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App: React.SFC<GameboardProps> = props => {
+  return <Gameboard {...props} />;
 };
 
-export default App;
+const mapStateToProps = (state: any) => ({
+  width: window.innerWidth,
+  height: window.innerHeight,
+  stations: state.gameboard.stations,
+  connections: state.gameboard.connections,
+  pieces: state.gameboard.pieces
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+  onStationClick: (stationNumber: number) => () =>
+    dispatch(clickStation(stationNumber)),
+  onConnectionClick: (connection: IConnection) => () =>
+    dispatch(clickConnection(connection)),
+  onPieceClick: (pieceId: number) => () => dispatch(clickPiece(pieceId)),
+  onCommitClick: () => dispatch(clickCommit())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
