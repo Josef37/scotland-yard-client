@@ -38,7 +38,6 @@ const Station: React.SFC<StationProps> = ({
         top: y,
         transform: `scale(${size / 200}) translate(-50%, -50%)`,
         transformOrigin: "top left",
-        transition: "0.5s",
         cursor: "pointer"
       }}
     >

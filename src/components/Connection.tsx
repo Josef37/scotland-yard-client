@@ -8,7 +8,6 @@ export interface ConnectionProps {
   x2: number;
   y2: number;
   transportationType: TransportationType;
-  onClick: (event: React.MouseEvent) => void;
 }
 
 const Connection: React.SFC<ConnectionProps> = ({
@@ -17,8 +16,7 @@ const Connection: React.SFC<ConnectionProps> = ({
   y1,
   x2,
   y2,
-  transportationType,
-  onClick
+  transportationType
 }) => {
   let shiftRight = 0;
   switch (transportationType) {
@@ -63,7 +61,6 @@ const Connection: React.SFC<ConnectionProps> = ({
       >
         <line
           style={{ pointerEvents: "stroke", cursor: "pointer" }}
-          onClick={onClick}
           x1={x1 - left + strokeWidth / 2}
           y1={y1 - top + strokeWidth / 2}
           x2={x2 - left + strokeWidth / 2}

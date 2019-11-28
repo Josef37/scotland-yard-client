@@ -1,34 +1,65 @@
 import React from "react";
-import Gameboard, { GameboardProps } from "./components/Gameboard";
 import { connect } from "react-redux";
+import { clickPiece, clickStation, login } from "./actions";
+import { useWindowSize } from "./utils/useWindowSizeHook";
 import "./App.css";
-import { IConnection } from "./reducers";
-import {
-  clickStation,
-  clickConnection,
-  clickPiece,
-  clickCommit
-} from "./actions";
+import Gameboard, { GameboardProps } from "./components/Gameboard";
+import Login, { LoginProps } from "./components/Login";
+import Lobby, { LobbyProps } from "./components/Lobby";
+import { Location } from "./constants";
 
-const App: React.SFC<GameboardProps> = props => {
-  return <Gameboard {...props} />;
+export interface AppProps {
+  location: Location;
+  login: LoginProps;
+  lobby: LobbyProps;
+  gameboard: GameboardProps;
+}
+
+const App: React.SFC<AppProps> = ({ location, login, lobby, gameboard }) => {
+  console.log("app", { location, login, lobby, gameboard });
+  const [width, height] = useWindowSize();
+  switch (location) {
+    case Location.LOGIN:
+      return <Login onSubmitLogin={login.onSubmitLogin} />;
+    case Location.LOBBY:
+      return <Lobby players={lobby.players} />;
+    case Location.GAME:
+      return <Gameboard {...gameboard} height={height} width={width} />;
+    default:
+      console.log("Invalid location");
+      return <p>Invalid location, please reload</p>;
+  }
 };
 
 const mapStateToProps = (state: any) => ({
-  width: window.innerWidth,
-  height: window.innerHeight,
-  stations: state.gameboard.stations,
-  connections: state.gameboard.connections,
-  pieces: state.gameboard.pieces
+  location: state.location,
+  lobby: state.lobby,
+  gameboard: {
+    width: window.innerWidth,
+    height: window.innerHeight,
+    stations: state.gameboard.stations,
+    connections: state.gameboard.connections,
+    pieces: state.gameboard.pieces,
+    selectedPiece: state.gameboard.selectedPiece,
+    players: state.lobby
+  }
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  onStationClick: (stationNumber: number) => () =>
-    dispatch(clickStation(stationNumber)),
-  onConnectionClick: (connection: IConnection) => () =>
-    dispatch(clickConnection(connection)),
-  onPieceClick: (pieceId: number) => () => dispatch(clickPiece(pieceId)),
-  onCommitClick: () => dispatch(clickCommit())
+  login: {
+    onSubmitLogin: (name: string) => dispatch(login(name))
+  },
+  gameboard: {
+    onStationClick: (stationNumber: number) => () =>
+      dispatch(clickStation(stationNumber)),
+    onPieceClick: (pieceId: number) => () => dispatch(clickPiece(pieceId))
+  }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+const mergeProps = (stateProps: any, dispatchProps: any, ownProps: any) => {
+  return Object.assign({}, ownProps, stateProps, dispatchProps, {
+    gameboard: Object.assign(stateProps.gameboard, dispatchProps.gameboard)
+  });
+};
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(App);

@@ -2,13 +2,21 @@ import * as React from "react";
 import Station from "./Station";
 import Connection from "./Connection";
 import Piece from "./Piece";
-import { IStation, IConnection, IPiece } from "../reducers";
+import { IStation, IConnection, IPiece } from "../reducers/gameboard";
 
 export enum TransportationType {
   Taxi,
   Bus,
   Underground,
   Ferry
+}
+
+export enum TicketType {
+  Taxi,
+  Bus,
+  Underground,
+  Black,
+  Double
 }
 
 export const transportationColors = new Map([
@@ -18,16 +26,22 @@ export const transportationColors = new Map([
   [TransportationType.Ferry, "#000"]
 ]);
 
+export const transportToTicketMap = new Map([
+  [TransportationType.Taxi, [TicketType.Taxi, TicketType.Black]],
+  [TransportationType.Bus, [TicketType.Bus, TicketType.Black]],
+  [TransportationType.Underground, [TicketType.Underground, TicketType.Black]],
+  [TransportationType.Ferry, [TicketType.Black]]
+]);
+
 export interface GameboardProps {
   width: number;
   height: number;
   stations: Array<IStation>;
   connections: Array<IConnection>;
   pieces: Array<IPiece>;
+  selectedPiece: number;
   onStationClick: (stationNumber: number) => () => void;
-  onConnectionClick: (connection: IConnection) => () => void;
   onPieceClick: (pieceId: number) => () => void;
-  onCommitClick: () => void;
 }
 
 const Gameboard: React.SFC<GameboardProps> = ({
@@ -36,10 +50,9 @@ const Gameboard: React.SFC<GameboardProps> = ({
   stations,
   connections,
   pieces,
+  selectedPiece,
   onStationClick,
-  onConnectionClick,
-  onPieceClick,
-  onCommitClick
+  onPieceClick
 }) => {
   function getStation(stationNumber: number) {
     return stations.filter(station => station.number === stationNumber)[0];
@@ -91,7 +104,14 @@ const Gameboard: React.SFC<GameboardProps> = ({
   });
 
   return (
-    <div style={{ width, height, position: "relative" }}>
+    <div
+      style={{
+        width,
+        height,
+        position: "relative",
+        backgroundColor: "#111"
+      }}
+    >
       {connections.map(connection => {
         let [station1, station2] = [
           connection.station1,
@@ -105,7 +125,6 @@ const Gameboard: React.SFC<GameboardProps> = ({
             {...{ x1, y1, x2, y2 }}
             strokeWidth={stationSize / 4}
             transportationType={connection.type}
-            onClick={onConnectionClick(connection)}
           />
         );
       })}
@@ -133,27 +152,11 @@ const Gameboard: React.SFC<GameboardProps> = ({
             y={y}
             color={piece.color}
             stationSize={stationSize}
-            selected={piece.selected}
+            selected={piece.id === selectedPiece}
             onClick={onPieceClick(piece.id)}
-            movedFromStation={piece.movedFromStation}
           />
         );
       })}
-
-      <button
-        style={{
-          position: "absolute",
-          bottom: 15,
-          right: 0,
-          left: 0,
-          margin: "0 auto",
-          fontSize: 40,
-          padding: 10
-        }}
-        onClick={onCommitClick}
-      >
-        Commit Moves
-      </button>
     </div>
   );
 };

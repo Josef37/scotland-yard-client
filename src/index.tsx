@@ -1,16 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import * as serviceWorker from "./serviceWorker";
-import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-import thunk from "redux-thunk";
+import { applyMiddleware, createStore } from "redux";
 import { createLogger } from "redux-logger";
-import { gameboard } from "./reducers";
+import thunk from "redux-thunk";
+import App from "./App";
+import "./index.css";
+import rootReducer from "./reducers";
+import * as serviceWorker from "./serviceWorker";
 
 const middlewares = [thunk, createLogger()];
-const rootReducer = combineReducers({ gameboard });
 const store = createStore(rootReducer, applyMiddleware(...middlewares));
 
 ReactDOM.render(

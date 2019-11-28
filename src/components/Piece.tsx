@@ -7,7 +7,6 @@ export interface PieceProps {
   stationSize: number;
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   selected: boolean;
-  movedFromStation: number | undefined;
 }
 
 const Piece: React.SFC<PieceProps> = ({
@@ -16,24 +15,18 @@ const Piece: React.SFC<PieceProps> = ({
   y,
   stationSize,
   onClick,
-  selected,
-  movedFromStation
+  selected
 }) => {
   let borderWidth = stationSize / 5;
   if (selected) borderWidth *= 1.5;
   return (
     <div
-      title={
-        movedFromStation !== undefined
-          ? `Moved from station ${movedFromStation}`
-          : undefined
-      }
       style={{
         position: "absolute",
         borderRadius: "50%",
         borderWidth: borderWidth,
         borderColor: color,
-        borderStyle: movedFromStation !== undefined ? "solid" : "double",
+        borderStyle: "solid",
         left: x,
         top: y,
         width: stationSize + 2 * borderWidth,
