@@ -2,7 +2,8 @@ import * as React from "react";
 import Station from "./Station";
 import Connection from "./Connection";
 import Piece from "./Piece";
-import { IStation, IConnection, IPiece } from "../reducers/gameboard";
+import { IStation, IConnection, IPiece, IMove } from "../reducers/gameboard";
+import TicketSelector from "./TicketSelector";
 
 export enum TransportationType {
   Taxi,
@@ -26,23 +27,17 @@ export const transportationColors = new Map([
   [TransportationType.Ferry, "#000"]
 ]);
 
-export const transportToTicketMap = new Map([
-  [TransportationType.Taxi, [TicketType.Taxi, TicketType.Black]],
-  [TransportationType.Bus, [TicketType.Bus, TicketType.Black]],
-  [TransportationType.Underground, [TicketType.Underground, TicketType.Black]],
-  [TransportationType.Ferry, [TicketType.Black]]
-]);
-
 export interface GameboardProps {
   width: number;
   height: number;
   stations: Array<IStation>;
   connections: Array<IConnection>;
   pieces: Array<IPiece>;
-  selectedPieceId: number;
+  move: IMove;
   ownPieceIds: Array<number>;
   onStationClick: (stationNumber: number) => () => void;
   onPieceClick: (pieceId: number) => () => void;
+  onTicketSelect: (ticketType: TicketType) => () => void;
 }
 
 const Gameboard: React.SFC<GameboardProps> = ({
@@ -51,10 +46,11 @@ const Gameboard: React.SFC<GameboardProps> = ({
   stations,
   connections,
   pieces,
-  selectedPieceId,
+  move,
   ownPieceIds,
   onStationClick,
-  onPieceClick
+  onPieceClick,
+  onTicketSelect
 }) => {
   function getStation(stationNumber: number) {
     return stations.filter(station => station.number === stationNumber)[0];
@@ -154,12 +150,16 @@ const Gameboard: React.SFC<GameboardProps> = ({
             y={y}
             color={piece.color}
             stationSize={stationSize}
-            isSelected={piece.id === selectedPieceId}
+            isSelected={piece.id === move.pieceId}
             isOwnPiece={ownPieceIds.includes(piece.id)}
             onClick={onPieceClick(piece.id)}
           />
         );
       })}
+
+      {move.pieceId && move.stationNumber ? (
+        <TicketSelector onTicketSelect={onTicketSelect} />
+      ) : null}
     </div>
   );
 };

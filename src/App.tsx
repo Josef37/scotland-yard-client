@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { clickPiece, clickStation, login } from "./actions";
+import { clickPiece, clickStation, login, selectTicket } from "./actions";
 import { useWindowSize } from "./utils/useWindowSizeHook";
-import Gameboard, { GameboardProps } from "./components/Gameboard";
+import Gameboard, { GameboardProps, TicketType } from "./components/Gameboard";
 import Login, { LoginProps } from "./components/Login";
 import Lobby, { LobbyProps } from "./components/Lobby";
 import { Location } from "./constants";
@@ -38,7 +38,7 @@ const mapStateToProps = (state: any) => ({
     stations: state.gameboard.stations,
     connections: state.gameboard.connections,
     pieces: state.gameboard.pieces,
-    selectedPieceId: state.gameboard.selectedPieceId,
+    move: state.gameboard.move,
     ownPieceIds: state.gameboard.ownPieceIds,
     players: state.lobby
   }
@@ -51,7 +51,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   gameboard: {
     onStationClick: (stationNumber: number) => () =>
       dispatch(clickStation(stationNumber)),
-    onPieceClick: (pieceId: number) => () => dispatch(clickPiece(pieceId))
+    onPieceClick: (pieceId: number) => () => dispatch(clickPiece(pieceId)),
+    onTicketSelect: (ticketType: TicketType) => () =>
+      dispatch(selectTicket(ticketType))
   }
 });
 

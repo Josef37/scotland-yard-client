@@ -5,25 +5,32 @@ import {
   LOGIN,
   MOVE_PIECE,
   SET_SOCKET,
-  START_GAME
+  START_GAME,
+  CLICK_STATION
 } from "./constants";
 import { GameboardState } from "./reducers/gameboard";
 import { LobbyData } from "./reducers/lobby";
+import { TicketType } from "./components/Gameboard";
 
 export const clickPiece = (pieceId: number) => {
   return { type: CLICK_PIECE, payload: pieceId };
 };
 
-export const clickStation = (stationNumber: number) => (
+export const clickStation = (stationNumber: number) => {
+  return { type: CLICK_STATION, payload: stationNumber };
+};
+
+export const selectTicket = (ticketType: TicketType) => (
   dispatch: any,
   getState: any
 ) => {
   const { socket, gameboard } = getState();
-  const { selectedPieceId } = gameboard;
-  if (!selectedPieceId || !socket) return;
+  const { pieceId, stationNumber } = gameboard.move;
+  if (!pieceId || !stationNumber || !socket) return;
   socket.emit("move", {
-    pieceId: selectedPieceId,
-    stationNumber
+    pieceId,
+    stationNumber,
+    ticketType
   });
 };
 
@@ -40,7 +47,7 @@ const setupSocket = (dispatch: any, name: string) => {
   });
 
   socket.on("start game", (gameboardState: GameboardState) => {
-    dispatch({ type: START_GAME, payload: gameboardState });
+    dispatch({ type: START_GAME, payload: { ...gameboardState, move: {} } });
   });
 
   socket.on("move", (move: { pieceId: number; stationNumber: number }) =>

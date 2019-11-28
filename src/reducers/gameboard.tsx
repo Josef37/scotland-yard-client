@@ -1,5 +1,10 @@
 import { TransportationType, TicketType } from "../components/Gameboard";
-import { CLICK_PIECE, MOVE_PIECE, START_GAME } from "../constants";
+import {
+  CLICK_PIECE,
+  MOVE_PIECE,
+  START_GAME,
+  CLICK_STATION
+} from "../constants";
 import { Action } from "./ActionInterface";
 
 export interface IStation {
@@ -22,19 +27,26 @@ export interface IPiece {
   isMrX: boolean;
 }
 
+export interface IMove {
+  pieceId?: number;
+  stationNumber?: number;
+  ticketType?: TicketType;
+}
+
 export interface GameboardState {
   stations: Array<IStation>;
   connections: Array<IConnection>;
   pieces: Array<IPiece>;
   ownPieceIds: Array<number>;
-  selectedPieceId?: number;
+  move: IMove;
 }
 
 const initialState = {
   stations: [],
   connections: [],
   pieces: [],
-  ownPieceIds: []
+  ownPieceIds: [],
+  move: {}
 };
 
 export const gameboard = (
@@ -47,14 +59,18 @@ export const gameboard = (
     case CLICK_PIECE: {
       const pieceId = action.payload;
       if (!state.ownPieceIds.includes(pieceId)) return state;
-      return { ...state, selectedPieceId: pieceId };
+      return { ...state, move: { ...state.move, pieceId } };
+    }
+    case CLICK_STATION: {
+      const stationNumber = action.payload;
+      return { ...state, move: { ...state.move, stationNumber } };
     }
     case MOVE_PIECE: {
       const { pieceId, stationNumber } = action.payload;
       const pieces = state.pieces.map(piece =>
         piece.id === pieceId ? { ...piece, stationNumber } : piece
       );
-      return { ...state, pieces, selectedPieceId: undefined };
+      return { ...state, pieces, move: {} }; // BUG: This reset can be triggered by other peoples moves
     }
     default:
       return state;
