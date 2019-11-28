@@ -39,7 +39,8 @@ export interface GameboardProps {
   stations: Array<IStation>;
   connections: Array<IConnection>;
   pieces: Array<IPiece>;
-  selectedPiece: number;
+  selectedPieceId: number;
+  ownPieceIds: Array<number>;
   onStationClick: (stationNumber: number) => () => void;
   onPieceClick: (pieceId: number) => () => void;
 }
@@ -50,7 +51,8 @@ const Gameboard: React.SFC<GameboardProps> = ({
   stations,
   connections,
   pieces,
-  selectedPiece,
+  selectedPieceId,
+  ownPieceIds,
   onStationClick,
   onPieceClick
 }) => {
@@ -62,8 +64,8 @@ const Gameboard: React.SFC<GameboardProps> = ({
     return connections
       .filter(
         connection =>
-          connection.station1 === stationNumber ||
-          connection.station2 === stationNumber
+          connection.station1Number === stationNumber ||
+          connection.station2Number === stationNumber
       )
       .map(connection => connection.type);
   }
@@ -114,8 +116,8 @@ const Gameboard: React.SFC<GameboardProps> = ({
     >
       {connections.map(connection => {
         let [station1, station2] = [
-          connection.station1,
-          connection.station2
+          connection.station1Number,
+          connection.station2Number
         ].sort((a, b) => a - b);
         let { x: x1, y: y1 } = getStation(station1);
         let { x: x2, y: y2 } = getStation(station2);
@@ -144,7 +146,7 @@ const Gameboard: React.SFC<GameboardProps> = ({
       })}
 
       {pieces.map(piece => {
-        let { x, y } = getStation(piece.station);
+        let { x, y } = getStation(piece.stationNumber);
         return (
           <Piece
             key={piece.id}
@@ -152,7 +154,8 @@ const Gameboard: React.SFC<GameboardProps> = ({
             y={y}
             color={piece.color}
             stationSize={stationSize}
-            selected={piece.id === selectedPiece}
+            isSelected={piece.id === selectedPieceId}
+            isOwnPiece={ownPieceIds.includes(piece.id)}
             onClick={onPieceClick(piece.id)}
           />
         );

@@ -1,5 +1,5 @@
 import { LOAD_LOBBY } from "../constants";
-import { IAction } from "./gameboard";
+import { Action } from "./ActionInterface";
 
 export interface LobbyData {
   players: {
@@ -15,7 +15,7 @@ const initialState = {
   }
 };
 
-export const lobby = (state: LobbyData = initialState, action: IAction) => {
+export const lobby = (state: LobbyData = initialState, action: Action) => {
   switch (action.type) {
     case LOAD_LOBBY:
       return action.payload;

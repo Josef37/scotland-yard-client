@@ -6,7 +6,8 @@ export interface PieceProps {
   y: number;
   stationSize: number;
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-  selected: boolean;
+  isSelected: boolean;
+  isOwnPiece: boolean;
 }
 
 const Piece: React.SFC<PieceProps> = ({
@@ -15,10 +16,12 @@ const Piece: React.SFC<PieceProps> = ({
   y,
   stationSize,
   onClick,
-  selected
+  isSelected,
+  isOwnPiece
 }) => {
+  const [highlight, setHighlight] = React.useState(isSelected);
   let borderWidth = stationSize / 5;
-  if (selected) borderWidth *= 1.5;
+  if (highlight && isOwnPiece) borderWidth *= 2;
   return (
     <div
       style={{
@@ -32,10 +35,12 @@ const Piece: React.SFC<PieceProps> = ({
         width: stationSize + 2 * borderWidth,
         height: stationSize + 2 * borderWidth,
         transform: `translate(-50%, -50%)`,
-        transition: "top 1s, left 1s, border-width: 0.2s",
+        transition: "all 0.5s",
         cursor: "pointer"
       }}
       onClick={onClick}
+      onMouseEnter={() => setHighlight(true)}
+      onMouseLeave={() => setHighlight(false)}
     />
   );
 };

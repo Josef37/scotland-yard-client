@@ -1,7 +1,7 @@
-import { START_GAME, Location, EXIT_GAME, LOGIN } from "../constants";
-import { IAction } from "./gameboard";
+import { EXIT_GAME, Location, LOGIN, START_GAME } from "../constants";
+import { Action } from "./ActionInterface";
 
-export const location = (state = Location.LOGIN, action: IAction) => {
+export const location = (state = Location.LOGIN, action: Action) => {
   switch (action.type) {
     case START_GAME:
       return Location.GAME;

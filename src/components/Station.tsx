@@ -41,8 +41,8 @@ const Station: React.SFC<StationProps> = ({
         cursor: "pointer"
       }}
     >
-      <div className="upper" style={{ backgroundColor: upperColor }}></div>
-      <div className="lower" style={{ backgroundColor: lowerColor }}></div>
+      <div className="upper" style={{ backgroundColor: upperColor }} />
+      <div className="lower" style={{ backgroundColor: lowerColor }} />
       <div
         className="inner"
         style={{ backgroundColor: innerColor, color: textColor }}

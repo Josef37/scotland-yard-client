@@ -10,6 +10,37 @@ export interface ConnectionProps {
   transportationType: TransportationType;
 }
 
+/** Shifts connection line to avoid overlapping bus and taxi */
+const getShiftRight = (
+  strokeWidth: number,
+  transportationType: TransportationType
+) => {
+  switch (transportationType) {
+    case TransportationType.Taxi:
+      return (2 / 3) * strokeWidth;
+    case TransportationType.Bus:
+      return -(2 / 3) * strokeWidth;
+    default:
+      return 0;
+  }
+};
+
+function getShift(
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  shiftRight: number
+) {
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const length = Math.sqrt(dx ** 2 + dy ** 2);
+  const scale = shiftRight / length;
+  const shiftX = -dy * scale;
+  const shiftY = dx * scale;
+  return { shiftX, shiftY };
+}
+
 const Connection: React.SFC<ConnectionProps> = ({
   strokeWidth,
   x1,
@@ -18,31 +49,12 @@ const Connection: React.SFC<ConnectionProps> = ({
   y2,
   transportationType
 }) => {
-  let shiftRight = 0;
-  switch (transportationType) {
-    case TransportationType.Taxi:
-      shiftRight = (strokeWidth * 2) / 3;
-      break;
-    case TransportationType.Bus:
-      shiftRight = (-strokeWidth * 2) / 3;
-      break;
-    case TransportationType.Underground:
-    case TransportationType.Ferry:
-      shiftRight = 0;
-      break;
-    default:
-      shiftRight = 0;
-      break;
-  }
-  const width = Math.abs(x1 - x2) + strokeWidth;
-  const height = Math.abs(y1 - y2) + strokeWidth;
+  const containerWidth = Math.abs(x1 - x2) + strokeWidth;
+  const containerHeight = Math.abs(y1 - y2) + strokeWidth;
   const top = Math.min(y1, y2);
   const left = Math.min(x1, x2);
-  const dx = x2 - x1;
-  const dy = y2 - y1;
-  const length = Math.sqrt(dx ** 2 + dy ** 2);
-  const shiftX = (-shiftRight * dy) / length;
-  const shiftY = (shiftRight * dx) / length;
+  const shiftRight = getShiftRight(strokeWidth, transportationType);
+  const { shiftX, shiftY } = getShift(x1, y1, x2, y2, shiftRight);
 
   return (
     <div
@@ -55,9 +67,9 @@ const Connection: React.SFC<ConnectionProps> = ({
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={width}
-        height={height}
-        viewBox={`0 0 ${width} ${height}`}
+        width={containerWidth}
+        height={containerHeight}
+        viewBox={`0 0 ${containerWidth} ${containerHeight}`}
       >
         <line
           style={{ pointerEvents: "stroke", cursor: "pointer" }}

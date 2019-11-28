@@ -17,6 +17,7 @@ const Login: React.SFC<LoginProps> = ({ onSubmitLogin }) => {
       <label>
         Your Nickname:
         <input
+          autoFocus
           type="text"
           id="nickname"
           name="nickname"
