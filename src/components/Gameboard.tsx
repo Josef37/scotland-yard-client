@@ -60,7 +60,7 @@ const Gameboard: React.SFC<GameboardProps> = ({
   onTicketSelect
 }) => {
   function getStation(stationNumber: number) {
-    return stations.filter(station => station.number === stationNumber)[0];
+    return stations.find(station => station.number === stationNumber);
   }
 
   function getStationTypes(stationNumber: number) {
@@ -118,12 +118,15 @@ const Gameboard: React.SFC<GameboardProps> = ({
       }}
     >
       {connections.map(connection => {
-        let [station1, station2] = [
+        let [station1Number, station2Number] = [
           connection.station1Number,
           connection.station2Number
         ].sort((a, b) => a - b);
-        let { x: x1, y: y1 } = getStation(station1);
-        let { x: x2, y: y2 } = getStation(station2);
+        let station1 = getStation(station1Number);
+        let station2 = getStation(station2Number);
+        if (!station1 || !station2) return null;
+        let { x: x1, y: y1 } = station1;
+        let { x: x2, y: y2 } = station2;
         return (
           <Connection
             key={Object.values(connection).join("")}
@@ -143,13 +146,16 @@ const Gameboard: React.SFC<GameboardProps> = ({
             x={station.x}
             y={station.y}
             size={stationSize}
+            isSelected={station.number === move.stationNumber}
             onClick={onStationClick(station.number)}
           />
         );
       })}
 
       {pieces.map(piece => {
-        let { x, y } = getStation(piece.stationNumber);
+        let station = getStation(piece.stationNumber);
+        if (!station) return null;
+        let { x, y } = station;
         return (
           <Piece
             key={piece.id}

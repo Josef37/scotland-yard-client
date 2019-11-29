@@ -55,9 +55,13 @@ const setupSocket = (dispatch: any, name: string) => {
     dispatch({ type: MOVE_PIECE, payload: move })
   );
 
-  socket.on("mr x ticket", (ticketType: TicketType) =>
-    dispatch({ type: MR_X_TICKET, payload: ticketType })
-  );
+  socket.on("mr x ticket", (ticketType: TicketType) => {
+    if (ticketType === TicketType.Double) {
+      console.log("Mr X took double");
+    } else {
+      dispatch({ type: MR_X_TICKET, payload: ticketType });
+    }
+  });
 
   socket.on("mr x done", () => console.log("mr x done"));
   socket.on("detectives done", () => console.log("detectives done"));

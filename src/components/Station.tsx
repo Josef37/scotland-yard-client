@@ -8,6 +8,7 @@ export interface StationProps {
   x: number;
   y: number;
   size: number;
+  isSelected: boolean;
   onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
@@ -17,6 +18,7 @@ const Station: React.SFC<StationProps> = ({
   x,
   y,
   size,
+  isSelected,
   onClick
 }) => {
   const upperColor = transportationColors.get(TransportationType.Taxi);
@@ -29,6 +31,7 @@ const Station: React.SFC<StationProps> = ({
   const textColor = stationTypes.includes(TransportationType.Underground)
     ? "white"
     : "black";
+  const scale = ((isSelected ? 1.2 : 1) * size) / 200;
   return (
     <div
       className="outer"
@@ -36,7 +39,7 @@ const Station: React.SFC<StationProps> = ({
       style={{
         left: x,
         top: y,
-        transform: `scale(${size / 200}) translate(-50%, -50%)`,
+        transform: `scale(${scale}) translate(-50%, -50%)`,
         transformOrigin: "top left",
         cursor: "pointer"
       }}

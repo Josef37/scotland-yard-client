@@ -18,6 +18,7 @@ const TicketHistory: React.SFC<TicketHistoryProps> = ({ ticketHistory }) => {
     >
       {ticketHistory.map((ticketType, index) => (
         <span
+          key={index}
           style={{
             ...ticketColors.get(ticketType),
             display: "inline-block",
