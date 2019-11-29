@@ -6,15 +6,23 @@ import Gameboard, { GameboardProps, TicketType } from "./components/Gameboard";
 import Login, { LoginProps } from "./components/Login";
 import Lobby, { LobbyProps } from "./components/Lobby";
 import { Location } from "./constants";
+import TicketHistory from "./components/TicketHistory";
 
 export interface AppProps {
   location: Location;
   login: LoginProps;
   lobby: LobbyProps;
   gameboard: GameboardProps;
+  ticketHistory: Array<TicketType>;
 }
 
-const App: React.SFC<AppProps> = ({ location, login, lobby, gameboard }) => {
+const App: React.SFC<AppProps> = ({
+  location,
+  login,
+  lobby,
+  gameboard,
+  ticketHistory
+}) => {
   const [width, height] = useWindowSize();
   switch (location) {
     case Location.LOGIN:
@@ -22,7 +30,12 @@ const App: React.SFC<AppProps> = ({ location, login, lobby, gameboard }) => {
     case Location.LOBBY:
       return <Lobby players={lobby.players} />;
     case Location.GAME:
-      return <Gameboard {...gameboard} height={height} width={width} />;
+      return (
+        <div>
+          <Gameboard {...gameboard} height={height} width={width} />
+          <TicketHistory ticketHistory={ticketHistory} />
+        </div>
+      );
     default:
       console.log("Invalid location");
       return <p>Invalid location, please reload</p>;
@@ -41,7 +54,8 @@ const mapStateToProps = (state: any) => ({
     move: state.gameboard.move,
     ownPieceIds: state.gameboard.ownPieceIds,
     players: state.lobby
-  }
+  },
+  ticketHistory: state.ticketHistory
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

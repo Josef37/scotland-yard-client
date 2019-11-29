@@ -6,7 +6,8 @@ import {
   MOVE_PIECE,
   SET_SOCKET,
   START_GAME,
-  CLICK_STATION
+  CLICK_STATION,
+  MR_X_TICKET
 } from "./constants";
 import { GameboardState } from "./reducers/gameboard";
 import { LobbyData } from "./reducers/lobby";
@@ -52,6 +53,10 @@ const setupSocket = (dispatch: any, name: string) => {
 
   socket.on("move", (move: { pieceId: number; stationNumber: number }) =>
     dispatch({ type: MOVE_PIECE, payload: move })
+  );
+
+  socket.on("mr x ticket", (ticketType: TicketType) =>
+    dispatch({ type: MR_X_TICKET, payload: ticketType })
   );
 
   socket.on("mr x done", () => console.log("mr x done"));

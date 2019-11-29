@@ -1,6 +1,7 @@
 export const CLICK_PIECE = "CLICK_PIECE";
 export const CLICK_STATION = "CLICK_STATION";
 export const MOVE_PIECE = "MOVE_PIECE";
+export const MR_X_TICKET = "MR_X_TICKET";
 export const START_GAME = "START_GAME";
 export const EXIT_GAME = "EXIT_GAME";
 export const LOGIN = "LOGIN";

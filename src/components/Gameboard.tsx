@@ -27,6 +27,13 @@ export const transportationColors = new Map([
   [TransportationType.Ferry, "#000"]
 ]);
 
+export const ticketColors = new Map([
+  [TicketType.Taxi, { color: "black", backgroundColor: "#ffd843" }],
+  [TicketType.Bus, { color: "black", backgroundColor: "#2ec3c6" }],
+  [TicketType.Underground, { color: "white", backgroundColor: "#ff4d1d" }],
+  [TicketType.Black, { color: "white", backgroundColor: "#000" }]
+]);
+
 export interface GameboardProps {
   width: number;
   height: number;
