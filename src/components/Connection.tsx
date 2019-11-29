@@ -72,7 +72,6 @@ const Connection: React.SFC<ConnectionProps> = ({
         viewBox={`0 0 ${containerWidth} ${containerHeight}`}
       >
         <line
-          style={{ pointerEvents: "stroke", cursor: "pointer" }}
           x1={x1 - left + strokeWidth / 2}
           y1={y1 - top + strokeWidth / 2}
           x2={x2 - left + strokeWidth / 2}
