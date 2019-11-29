@@ -36,7 +36,8 @@ const Piece: React.SFC<PieceProps> = ({
         height: stationSize + 2 * borderWidth,
         transform: `translate(-50%, -50%)`,
         transition: "all 0.5s",
-        cursor: isOwnPiece ? "pointer" : "auto"
+        cursor: isOwnPiece ? "pointer" : "auto",
+        pointerEvents: isOwnPiece ? "auto" : "none"
       }}
       onClick={onClick}
       onMouseEnter={() => setHighlight(true)}
