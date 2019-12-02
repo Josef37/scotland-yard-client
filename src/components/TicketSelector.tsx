@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TicketType } from "./Gameboard";
+import { TicketType } from "../constants";
 import { getEnumEntries } from "../utils/getEnumEntries";
 
 export interface TicketSelectorProps {

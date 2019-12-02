@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TransportationType, transportationColors } from "./Gameboard";
+import { TransportationType, transportationColors } from "../constants";
 import "./Station.css";
 
 export interface StationProps {

@@ -17,3 +17,32 @@ export enum Location {
   LOBBY,
   GAME
 }
+
+export enum TransportationType {
+  Taxi,
+  Bus,
+  Underground,
+  Ferry
+}
+
+export enum TicketType {
+  Taxi,
+  Bus,
+  Underground,
+  Black,
+  Double
+}
+
+export const transportationColors = new Map([
+  [TransportationType.Taxi, "#ffd843"],
+  [TransportationType.Bus, "#2ec3c6"],
+  [TransportationType.Underground, "#ff4d1d"],
+  [TransportationType.Ferry, "#000"]
+]);
+
+export const ticketColors = new Map([
+  [TicketType.Taxi, { color: "black", backgroundColor: "#ffd843" }],
+  [TicketType.Bus, { color: "black", backgroundColor: "#2ec3c6" }],
+  [TicketType.Underground, { color: "white", backgroundColor: "#ff4d1d" }],
+  [TicketType.Black, { color: "white", backgroundColor: "#000" }]
+]);

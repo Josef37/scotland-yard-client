@@ -1,4 +1,4 @@
-import { TransportationType, TicketType } from "../components/Gameboard";
+import { TransportationType, TicketType } from "../constants";
 import {
   CLICK_PIECE,
   MOVE_PIECE,

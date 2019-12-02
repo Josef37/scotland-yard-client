@@ -1,5 +1,5 @@
 import { Action } from "./ActionInterface";
-import { TicketType } from "../components/Gameboard";
+import { TicketType } from "../constants";
 import { MR_X_TICKET } from "../constants";
 
 const initialState: Array<TicketType> = [];

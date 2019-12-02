@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TicketType, ticketColors } from "./Gameboard";
+import { TicketType, ticketColors } from "../constants";
 
 export interface TicketHistoryProps {
   ticketHistory: Array<TicketType>;

@@ -15,7 +15,7 @@ import {
 } from "./constants";
 import { GameboardState } from "./reducers/gameboard";
 import { LobbyData } from "./reducers/lobby";
-import { TicketType } from "./components/Gameboard";
+import { TicketType } from "./constants";
 
 export const clickPiece = (pieceId: number) => {
   return { type: CLICK_PIECE, payload: pieceId };
