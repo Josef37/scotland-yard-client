@@ -52,6 +52,11 @@ const setupSocket = (dispatch: any, name: string) => {
   });
 
   socket.on("start game", (gameboardState: GameboardState) => {
+    // deserialize Ticket map
+    gameboardState.pieces = gameboardState.pieces.map(piece => ({
+      ...piece,
+      tickets: new Map(piece.tickets)
+    }));
     dispatch({ type: START_GAME, payload: { ...gameboardState, move: {} } });
   });
 
