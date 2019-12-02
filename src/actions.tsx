@@ -7,7 +7,8 @@ import {
   SET_SOCKET,
   START_GAME,
   CLICK_STATION,
-  MR_X_TICKET
+  MR_X_TICKET,
+  MR_X_TURN
 } from "./constants";
 import { GameboardState } from "./reducers/gameboard";
 import { LobbyData } from "./reducers/lobby";
@@ -63,8 +64,12 @@ const setupSocket = (dispatch: any, name: string) => {
     }
   });
 
-  socket.on("mr x done", () => console.log("mr x done"));
-  socket.on("detectives done", () => console.log("detectives done"));
+  socket.on("mr x done", () => {
+    dispatch({ type: MR_X_TURN, payload: false });
+  });
+  socket.on("detectives done", () => {
+    dispatch({ type: MR_X_TURN, payload: true });
+  });
 
   socket.on("game over", (history: any) => {
     console.log(history);

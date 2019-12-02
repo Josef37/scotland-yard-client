@@ -7,6 +7,7 @@ export const EXIT_GAME = "EXIT_GAME";
 export const LOGIN = "LOGIN";
 export const LOAD_LOBBY = "LOAD_LOBBY";
 export const SET_SOCKET = "SET_SOCKET";
+export const MR_X_TURN = "MR_X_TURN";
 
 export enum Location {
   LOGIN,
