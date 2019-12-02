@@ -5,6 +5,7 @@ import Piece from "./Piece";
 import { IStation, IConnection, IPiece, IMove } from "../reducers/gameboard";
 import TicketSelector from "./TicketSelector";
 import { TicketType } from "../constants";
+import TicketDisplay from "./TicketDisplay";
 
 export interface GameboardProps {
   width: number;
@@ -138,6 +139,17 @@ const Gameboard: React.SFC<GameboardProps> = ({
             isSelected={piece.id === move.pieceId}
             isOwnPiece={ownPieceIds.includes(piece.id)}
             onClick={onPieceClick(piece.id)}
+          />
+        );
+      })}
+
+      {pieces.map((piece, index) => {
+        return (
+          <TicketDisplay
+            key={piece.id}
+            color={piece.color}
+            tickets={piece.tickets}
+            posTop={index * 150 + 50}
           />
         );
       })}
