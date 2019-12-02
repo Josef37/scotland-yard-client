@@ -5,24 +5,36 @@ export interface AnimatedTextProps {
 }
 
 const AnimatedText: React.SFC<AnimatedTextProps> = ({ text }) => {
+  React.useLayoutEffect(() => {
+    (Array.from(document.querySelectorAll(".animated-text")) as Array<
+      HTMLSpanElement
+    >).forEach(span => {
+      if (
+        span.parentElement &&
+        span.offsetWidth <= span.parentElement.offsetWidth
+      ) {
+        span.style.removeProperty("animation");
+      }
+    });
+  });
   return (
     <div
       style={{
         textAlign: "left",
         overflow: "hidden",
-        marginLeft: "auto",
-        display: "inline-block",
-        maxWidth: "100%"
+        marginLeft: "auto"
       }}
     >
       <span
+        className="animated-text"
         style={{
           position: "relative",
           whiteSpace: "nowrap",
           animation: `${text.length / 10 +
             2}s linear 0s infinite normal scroll`,
-          left: 0,
-          display: "inline-block"
+          display: "inline-block",
+          transform: "translateX(-100%)",
+          left: "100%"
         }}
       >
         {text}
