@@ -8,7 +8,10 @@ import {
   START_GAME,
   CLICK_STATION,
   MR_X_TICKET,
-  MR_X_TURN
+  MR_X_TURN,
+  MR_X_DOUBLE,
+  MR_X_WON,
+  DETECTIVES_WON
 } from "./constants";
 import { GameboardState } from "./reducers/gameboard";
 import { LobbyData } from "./reducers/lobby";
@@ -58,7 +61,7 @@ const setupSocket = (dispatch: any, name: string) => {
 
   socket.on("mr x ticket", (ticketType: TicketType) => {
     if (ticketType === TicketType.Double) {
-      console.log("Mr X took double");
+      dispatch({ type: MR_X_DOUBLE });
     } else {
       dispatch({ type: MR_X_TICKET, payload: ticketType });
     }
@@ -71,8 +74,11 @@ const setupSocket = (dispatch: any, name: string) => {
     dispatch({ type: MR_X_TURN, payload: true });
   });
 
-  socket.on("game over", (history: any) => {
-    console.log(history);
+  socket.on("mr x won", () => {
+    dispatch({ type: MR_X_WON });
+  });
+  socket.on("detectives won", () => {
+    dispatch({ type: DETECTIVES_WON });
   });
 
   dispatch({ type: SET_SOCKET, payload: socket });

@@ -3,8 +3,7 @@ import {
   CLICK_PIECE,
   MOVE_PIECE,
   START_GAME,
-  CLICK_STATION,
-  MR_X_TURN
+  CLICK_STATION
 } from "../constants";
 import { Action } from "./ActionInterface";
 
@@ -40,7 +39,6 @@ export interface GameboardState {
   pieces: Array<IPiece>;
   ownPieceIds: Array<number>;
   move: IMove;
-  mrXTurn: boolean;
 }
 
 const initialState = {
@@ -48,8 +46,7 @@ const initialState = {
   connections: [],
   pieces: [],
   ownPieceIds: [],
-  move: {},
-  mrXTurn: false
+  move: {}
 };
 
 export const gameboard = (
@@ -74,9 +71,6 @@ export const gameboard = (
         piece.id === pieceId ? { ...piece, stationNumber } : piece
       );
       return { ...state, pieces, move: {} }; // BUG: This reset can be triggered by other peoples moves
-    }
-    case MR_X_TURN: {
-      return { ...state, mrXTurn: action.payload };
     }
     default:
       return state;

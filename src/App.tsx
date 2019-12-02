@@ -7,7 +7,7 @@ import Login, { LoginProps } from "./components/Login";
 import Lobby, { LobbyProps } from "./components/Lobby";
 import { Location } from "./constants";
 import TicketHistory from "./components/TicketHistory";
-import TurnIndicator from "./components/TurnIndicator";
+import TurnIndicator, { TurnIndicatorProps } from "./components/TurnIndicator";
 
 export interface AppProps {
   location: Location;
@@ -15,7 +15,7 @@ export interface AppProps {
   lobby: LobbyProps;
   gameboard: GameboardProps;
   ticketHistory: Array<TicketType>;
-  mrXTurn: boolean;
+  turn: TurnIndicatorProps;
 }
 
 const App: React.SFC<AppProps> = ({
@@ -24,7 +24,7 @@ const App: React.SFC<AppProps> = ({
   lobby,
   gameboard,
   ticketHistory,
-  mrXTurn
+  turn
 }) => {
   const [width, height] = useWindowSize();
   switch (location) {
@@ -36,7 +36,7 @@ const App: React.SFC<AppProps> = ({
       return (
         <div>
           <Gameboard {...gameboard} height={height} width={width} />
-          <TurnIndicator mrXTurn={mrXTurn} />
+          <TurnIndicator {...turn} />
           <TicketHistory ticketHistory={ticketHistory} />
         </div>
       );
@@ -59,7 +59,11 @@ const mapStateToProps = (state: any) => ({
     ownPieceIds: state.gameboard.ownPieceIds,
     players: state.lobby
   },
-  mrXTurn: state.gameboard.mrXTurn,
+  turn: {
+    mrXTurn: state.turn.mrXTurn,
+    mrXDouble: state.turn.mrXDouble,
+    winner: state.turn.winner
+  },
   ticketHistory: state.ticketHistory
 });
 
