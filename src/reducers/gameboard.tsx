@@ -25,6 +25,7 @@ export interface IPiece {
   color: string;
   tickets: Map<TicketType, number>;
   isMrX: boolean;
+  playerName: string;
 }
 
 export interface IMove {

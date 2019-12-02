@@ -86,8 +86,7 @@ const Gameboard: React.SFC<GameboardProps> = ({
       style={{
         width,
         height,
-        position: "relative",
-        backgroundColor: "#111"
+        position: "relative"
       }}
     >
       {connections.map(connection => {
@@ -146,10 +145,11 @@ const Gameboard: React.SFC<GameboardProps> = ({
       {pieces.map((piece, index) => {
         return (
           <TicketDisplay
+            name={piece.playerName + (piece.isMrX ? " (Mr. X)" : "")}
             key={piece.id}
             color={piece.color}
             tickets={piece.tickets}
-            posTop={index * 150 + 50}
+            posTop={index * 200 + 50}
           />
         );
       })}
