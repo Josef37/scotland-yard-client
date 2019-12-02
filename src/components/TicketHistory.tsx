@@ -33,4 +33,4 @@ const TicketHistory: React.SFC<TicketHistoryProps> = ({ ticketHistory }) => {
   );
 };
 
-export default TicketHistory;
+export default React.memo(TicketHistory);

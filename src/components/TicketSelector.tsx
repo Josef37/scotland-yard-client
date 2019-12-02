@@ -30,4 +30,4 @@ const TicketSelector: React.SFC<TicketSelectorProps> = ({ onTicketSelect }) => {
   );
 };
 
-export default TicketSelector;
+export default React.memo(TicketSelector);

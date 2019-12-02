@@ -35,4 +35,4 @@ const TurnIndicator: React.SFC<TurnIndicatorProps> = ({
   );
 };
 
-export default TurnIndicator;
+export default React.memo(TurnIndicator);

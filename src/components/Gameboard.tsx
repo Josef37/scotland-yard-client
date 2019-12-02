@@ -177,4 +177,4 @@ const Gameboard: React.SFC<GameboardProps> = ({
   );
 };
 
-export default Gameboard;
+export default React.memo(Gameboard);
