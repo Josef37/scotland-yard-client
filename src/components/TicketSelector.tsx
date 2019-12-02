@@ -1,6 +1,5 @@
 import * as React from "react";
 import { TicketType } from "../constants";
-import { getEnumEntries } from "../utils/getEnumEntries";
 
 export interface TicketSelectorProps {
   onTicketSelect: (ticketType: TicketType) => () => void;
@@ -20,10 +19,9 @@ const TicketSelector: React.SFC<TicketSelectorProps> = ({ onTicketSelect }) => {
         backgroundColor: "#111b"
       }}
     >
-      {// How to loop typescript numerical enum
-      getEnumEntries(TicketType).map(([ticketName, ticketType]) => (
+      {Object.values(TicketType).map(ticketType => (
         <button onClick={onTicketSelect(ticketType)} key={ticketType}>
-          {ticketName}
+          {ticketType}
         </button>
       ))}
     </div>

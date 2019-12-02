@@ -26,7 +26,7 @@ const TicketHistory: React.SFC<TicketHistoryProps> = ({ ticketHistory }) => {
             margin: 5
           }}
         >
-          {`${index + 1}: ${TicketType[ticketType]}`}
+          {`${index + 1}: ${ticketType}`}
         </span>
       ))}
     </div>

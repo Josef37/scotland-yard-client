@@ -19,18 +19,18 @@ export enum Location {
 }
 
 export enum TransportationType {
-  Taxi,
-  Bus,
-  Underground,
-  Ferry
+  Taxi = "Taxi",
+  Bus = "Bus",
+  Underground = "Underground",
+  Ferry = "Ferry"
 }
 
 export enum TicketType {
-  Taxi,
-  Bus,
-  Underground,
-  Black,
-  Double
+  Taxi = "Taxi",
+  Bus = "Bus",
+  Underground = "Underground",
+  Black = "Black",
+  Double = "Double"
 }
 
 export const transportationColors = new Map([
