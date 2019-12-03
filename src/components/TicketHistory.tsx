@@ -6,6 +6,7 @@ export interface TicketHistoryProps {
 }
 
 const TicketHistory: React.SFC<TicketHistoryProps> = ({ ticketHistory }) => {
+  const reversedHistory = ticketHistory.slice().reverse();
   return (
     <div
       style={{
@@ -16,9 +17,9 @@ const TicketHistory: React.SFC<TicketHistoryProps> = ({ ticketHistory }) => {
         overflowY: "scroll"
       }}
     >
-      {ticketHistory.map((ticketType, index) => (
+      {reversedHistory.map((ticketType, index) => (
         <span
-          key={index}
+          key={ticketHistory.length - index}
           style={{
             ...ticketColors.get(ticketType),
             display: "inline-block",
@@ -26,7 +27,7 @@ const TicketHistory: React.SFC<TicketHistoryProps> = ({ ticketHistory }) => {
             margin: 5
           }}
         >
-          {`${index + 1}: ${ticketType}`}
+          {`${ticketHistory.length - index}: ${ticketType}`}
         </span>
       ))}
     </div>
