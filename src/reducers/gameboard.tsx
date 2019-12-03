@@ -67,13 +67,26 @@ export const gameboard = (
       return { ...state, move: { ...state.move, stationNumber } };
     }
     case MOVE_PIECE: {
-      const { pieceId, stationNumber } = action.payload;
+      const { pieceId, stationNumber, ticketType } = action.payload;
       const pieces = state.pieces.map(piece =>
-        piece.id === pieceId ? { ...piece, stationNumber } : piece
+        piece.id === pieceId
+          ? movePiece(piece, stationNumber, ticketType)
+          : piece
       );
       return { ...state, pieces, move: {} }; // BUG: This reset can be triggered by other peoples moves
     }
     default:
       return state;
   }
+};
+
+const movePiece = (
+  piece: IPiece,
+  stationNumber: number,
+  ticketType: TicketType
+) => {
+  const tickets = new Map(
+    piece.tickets.set(ticketType, piece.tickets.get(ticketType)! - 1)
+  );
+  return { ...piece, stationNumber, tickets };
 };

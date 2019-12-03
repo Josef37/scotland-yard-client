@@ -60,8 +60,13 @@ const setupSocket = (dispatch: any, name: string) => {
     dispatch({ type: START_GAME, payload: { ...gameboardState, move: {} } });
   });
 
-  socket.on("move", (move: { pieceId: number; stationNumber: number }) =>
-    dispatch({ type: MOVE_PIECE, payload: move })
+  socket.on(
+    "move",
+    (move: {
+      pieceId: number;
+      stationNumber: number;
+      ticketType: TicketType;
+    }) => dispatch({ type: MOVE_PIECE, payload: move })
   );
 
   socket.on("mr x ticket", (ticketType: TicketType) => {
