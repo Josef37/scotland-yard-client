@@ -64,7 +64,12 @@ export const gameboard = (
     }
     case CLICK_STATION: {
       const stationNumber = action.payload;
-      return { ...state, move: { ...state.move, stationNumber } };
+      if (state.ownPieceIds.length === 1)
+        return {
+          ...state,
+          move: { ...state.move, stationNumber, pieceId: state.ownPieceIds[0] }
+        };
+      else return { ...state, move: { ...state.move, stationNumber } };
     }
     case MOVE_PIECE: {
       const { pieceId, stationNumber, ticketType } = action.payload;
