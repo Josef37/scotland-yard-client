@@ -19,7 +19,7 @@ const TicketDisplay: React.SFC<TicketDisplayProps> = ({
   const [left, setLeft] = React.useState(0);
   React.useEffect(() => {
     if (!hover) {
-      const timeout = setTimeout(() => setLeft(-150), 2000);
+      const timeout = setTimeout(() => setLeft(-160), 2000);
       return () => clearTimeout(timeout);
     }
   });
@@ -41,10 +41,17 @@ const TicketDisplay: React.SFC<TicketDisplayProps> = ({
       }}
       onMouseLeave={() => {
         setHover(false);
-        setLeft(-150);
+        setLeft(-160);
       }}
     >
-      <div style={{ textAlign: "right", fontSize: "1.5em", height: "1.5em" }}>
+      <div
+        style={{
+          textAlign: "right",
+          fontSize: "1.5em",
+          height: "1.5em",
+          marginRight: 5
+        }}
+      >
         <AnimatedText text={name} />
       </div>
       <table style={{ borderSpacing: 5, marginLeft: "auto" }}>

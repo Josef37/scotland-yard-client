@@ -27,7 +27,7 @@ const TurnIndicator: React.SFC<TurnIndicatorProps> = ({
         textAlign: "center",
         color: "white",
         width: "100%",
-        fontSize: 20
+        fontSize: "2em"
       }}
     >
       {message}
