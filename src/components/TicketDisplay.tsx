@@ -15,11 +15,11 @@ const TicketDisplay: React.SFC<TicketDisplayProps> = ({
   name,
   shiftLeft
 }) => {
-  const [hover, setHover] = React.useState(false);
-  const [left, setLeft] = React.useState(shiftLeft);
+  const [isUserRequested, setIsUserRequested] = React.useState(false);
+  const [visible, setVisible] = React.useState(true);
   React.useEffect(() => {
-    if (!hover) {
-      const timeout = setTimeout(() => setLeft(0), 2000);
+    if (!isUserRequested) {
+      const timeout = setTimeout(() => setVisible(false), 2000);
       return () => clearTimeout(timeout);
     }
   });
@@ -28,19 +28,23 @@ const TicketDisplay: React.SFC<TicketDisplayProps> = ({
       style={{
         backgroundColor: color,
         position: "relative",
-        left: left,
+        left: visible ? shiftLeft : 0,
         padding: 10,
         marginBottom: 30,
         transition: "left 0.5s ease-out",
         cursor: "default"
       }}
       onMouseEnter={() => {
-        setHover(true);
-        setLeft(shiftLeft);
+        setVisible(true);
+        setIsUserRequested(true);
       }}
       onMouseLeave={() => {
-        setHover(false);
-        setLeft(0);
+        setVisible(false);
+        setIsUserRequested(true);
+      }}
+      onClick={() => {
+        setVisible(!visible);
+        setIsUserRequested(true);
       }}
     >
       <div style={{ fontSize: "1.5em", marginRight: 5 }}>
