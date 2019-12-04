@@ -1,6 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { clickPiece, clickStation, login, selectTicket } from "./actions";
+import {
+  clickPiece,
+  clickStation,
+  login,
+  selectTicket,
+  leaveGame
+} from "./actions";
 import { useWindowSize } from "./utils/useWindowSizeHook";
 import Gameboard, { GameboardProps } from "./components/Gameboard";
 import { TicketType } from "./constants";
@@ -8,6 +14,7 @@ import Login, { LoginProps } from "./components/Login";
 import Lobby, { LobbyProps } from "./components/Lobby";
 import { Location } from "./constants";
 import TicketHistory from "./components/TicketHistory";
+import CloseButton from "./components/CloseButton";
 import TurnIndicator, { TurnIndicatorProps } from "./components/TurnIndicator";
 
 export interface AppProps {
@@ -17,6 +24,7 @@ export interface AppProps {
   gameboard: GameboardProps;
   ticketHistory: Array<TicketType>;
   turn: TurnIndicatorProps;
+  leaveGame: () => void;
 }
 
 const App: React.SFC<AppProps> = ({
@@ -25,7 +33,8 @@ const App: React.SFC<AppProps> = ({
   lobby,
   gameboard,
   ticketHistory,
-  turn
+  turn,
+  leaveGame
 }) => {
   const [width, height] = useWindowSize();
   switch (location) {
@@ -39,6 +48,7 @@ const App: React.SFC<AppProps> = ({
           <Gameboard {...gameboard} height={height} width={width} />
           <TurnIndicator {...turn} />
           <TicketHistory ticketHistory={ticketHistory} />
+          {turn.winner ? <CloseButton onClose={leaveGame} /> : null}
         </div>
       );
     default:
@@ -78,7 +88,8 @@ const mapDispatchToProps = (dispatch: any) => ({
     onPieceClick: (pieceId: number) => () => dispatch(clickPiece(pieceId)),
     onTicketSelect: (ticketType: TicketType) => () =>
       dispatch(selectTicket(ticketType))
-  }
+  },
+  leaveGame: () => dispatch(leaveGame())
 });
 
 // merge the nested gameboard property, so dispatch props won't overwrite state props

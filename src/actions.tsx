@@ -11,7 +11,8 @@ import {
   MR_X_TURN,
   MR_X_DOUBLE,
   MR_X_WON,
-  DETECTIVES_WON
+  DETECTIVES_WON,
+  EXIT_GAME
 } from "./constants";
 import { GameboardState } from "./reducers/gameboard";
 import { LobbyData } from "./reducers/lobby";
@@ -42,6 +43,12 @@ export const selectTicket = (ticketType: TicketType) => (
 export const login = (name: string) => (dispatch: any) => {
   dispatch({ type: LOGIN, payload: name });
   setupSocket(dispatch, name);
+};
+
+export const leaveGame = () => (dispatch: any, getState: any) => {
+  const { socket } = getState();
+  socket.emit("leave game");
+  dispatch({ type: EXIT_GAME });
 };
 
 const setupSocket = (dispatch: any, name: string) => {
