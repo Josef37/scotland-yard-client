@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TicketType } from "../constants";
+import { TicketType, ticketColors } from "../constants";
 
 export interface TicketSelectorProps {
   onTicketSelect: (ticketType: TicketType) => () => void;
@@ -16,13 +16,29 @@ const TicketSelector: React.SFC<TicketSelectorProps> = ({ onTicketSelect }) => {
         padding: 15,
         border: "3px solid white",
         borderRadius: 10,
-        backgroundColor: "#111b"
+        backgroundColor: "#555e",
+        display: "flex",
+        justifyContent: "space-evenly"
       }}
     >
       {Object.values(TicketType).map(ticketType => (
-        <button onClick={onTicketSelect(ticketType)} key={ticketType}>
+        <span
+          onClick={onTicketSelect(ticketType)}
+          key={ticketType}
+          style={{
+            ...ticketColors.get(ticketType),
+            cursor: "pointer",
+            padding: ".5rem 1rem",
+            margin: ".5rem 1rem",
+            display: "inline-block",
+            borderRadius: ".5rem",
+            fontSize: "1.5em",
+            border: ".15rem solid",
+            fontWeight: "bold"
+          }}
+        >
           {ticketType}
-        </button>
+        </span>
       ))}
     </div>
   );

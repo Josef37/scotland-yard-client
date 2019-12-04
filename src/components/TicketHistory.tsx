@@ -12,7 +12,7 @@ const TicketHistory: React.SFC<TicketHistoryProps> = ({ ticketHistory }) => {
       style={{
         position: "absolute",
         bottom: 0,
-        height: 50,
+        maxHeight: "5rem",
         width: "100%",
         overflowY: "scroll"
       }}
@@ -22,12 +22,17 @@ const TicketHistory: React.SFC<TicketHistoryProps> = ({ ticketHistory }) => {
           key={ticketHistory.length - index}
           style={{
             ...ticketColors.get(ticketType),
-            display: "inline-block",
-            padding: "5px 10px",
-            margin: 5
+            padding: ".5rem 1rem",
+            margin: ".5rem",
+            display: "inline-flex",
+            alignItems: "center",
+            borderRadius: ".5rem"
           }}
         >
-          {`${ticketHistory.length - index}: ${ticketType}`}
+          <span style={{ marginRight: ".5rem", fontSize: "1.2rem" }}>
+            {ticketHistory.length - index}
+          </span>
+          <b style={{ fontSize: "1.5em" }}>{ticketType}</b>
         </span>
       ))}
     </div>
