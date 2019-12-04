@@ -21,10 +21,11 @@ const Piece: React.SFC<PieceProps> = ({
 }) => {
   const [highlight, setHighlight] = React.useState(isSelected);
   let borderWidth = stationSize / 5;
-  if (highlight && isOwnPiece) borderWidth *= 2;
+  if (highlight && isOwnPiece) borderWidth *= 1.5;
   return (
     <div
       style={{
+        boxSizing: "content-box",
         position: "absolute",
         borderRadius: "50%",
         borderWidth: borderWidth,
@@ -32,14 +33,17 @@ const Piece: React.SFC<PieceProps> = ({
         borderStyle: "solid",
         left: x,
         top: y,
-        width: stationSize + 2 * borderWidth,
-        height: stationSize + 2 * borderWidth,
+        width: stationSize,
+        height: stationSize,
         transform: `translate(-50%, -50%)`,
-        transition: "all 0.5s",
+        transition: "border-width 0.2s ease-out, left 0.5s, top 0.5s",
         cursor: isOwnPiece ? "pointer" : "auto",
         pointerEvents: isOwnPiece ? "auto" : "none"
       }}
-      onClick={onClick}
+      onClick={event => {
+        onClick(event);
+        setHighlight(true);
+      }}
       onMouseEnter={() => setHighlight(true)}
       onMouseLeave={() => setHighlight(false)}
     />
