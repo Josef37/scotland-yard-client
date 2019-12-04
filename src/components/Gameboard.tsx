@@ -5,7 +5,7 @@ import Piece from "./Piece";
 import { IStation, IConnection, IPiece, IMove } from "../reducers/gameboard";
 import TicketSelector from "./TicketSelector";
 import { TicketType } from "../constants";
-import TicketDisplay from "./TicketDisplay";
+import TicketDisplayContainer from "./TicketDisplayContainer";
 
 export interface GameboardProps {
   width: number;
@@ -61,8 +61,7 @@ const Gameboard: React.SFC<GameboardProps> = ({
     }
   );
 
-  const stationSize =
-    Math.min(width, height) / (Math.sqrt(stations.length) * 4);
+  const stationSize = (width + height) / 2 / (Math.sqrt(stations.length) * 4);
   const padding = 2 * stationSize;
 
   stations = stations.map(station => {
@@ -142,17 +141,7 @@ const Gameboard: React.SFC<GameboardProps> = ({
         );
       })}
 
-      {pieces.map((piece, index) => {
-        return (
-          <TicketDisplay
-            name={piece.playerName + (piece.isMrX ? " (Mr. X)" : "")}
-            key={piece.id}
-            color={piece.color}
-            tickets={piece.tickets}
-            posTop={index * 200 + 50}
-          />
-        );
-      })}
+      <TicketDisplayContainer pieces={pieces} />
 
       {move.pieceId && move.stationNumber ? (
         <TicketSelector onTicketSelect={onTicketSelect} />

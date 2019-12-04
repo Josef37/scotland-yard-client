@@ -6,20 +6,20 @@ export interface TicketDisplayProps {
   name: string;
   color: string;
   tickets: Map<TicketType, number>;
-  posTop: number;
+  shiftLeft: number;
 }
 
 const TicketDisplay: React.SFC<TicketDisplayProps> = ({
   color,
   tickets,
-  posTop,
-  name
+  name,
+  shiftLeft
 }) => {
   const [hover, setHover] = React.useState(false);
-  const [left, setLeft] = React.useState(0);
+  const [left, setLeft] = React.useState(shiftLeft);
   React.useEffect(() => {
     if (!hover) {
-      const timeout = setTimeout(() => setLeft(-160), 2000);
+      const timeout = setTimeout(() => setLeft(0), 2000);
       return () => clearTimeout(timeout);
     }
   });
@@ -27,31 +27,23 @@ const TicketDisplay: React.SFC<TicketDisplayProps> = ({
     <div
       style={{
         backgroundColor: color,
-        position: "absolute",
+        position: "relative",
         left: left,
-        top: posTop,
         padding: 10,
-        width: 200,
+        marginBottom: 30,
         transition: "left 0.5s ease-out",
         cursor: "default"
       }}
       onMouseEnter={() => {
         setHover(true);
-        setLeft(0);
+        setLeft(shiftLeft);
       }}
       onMouseLeave={() => {
         setHover(false);
-        setLeft(-160);
+        setLeft(0);
       }}
     >
-      <div
-        style={{
-          textAlign: "right",
-          fontSize: "1.5em",
-          height: "1.5em",
-          marginRight: 5
-        }}
-      >
+      <div style={{ fontSize: "1.5em", marginRight: 5 }}>
         <AnimatedText text={name} />
       </div>
       <table style={{ borderSpacing: 5, marginLeft: "auto" }}>
