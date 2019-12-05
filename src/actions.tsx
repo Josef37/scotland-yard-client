@@ -12,7 +12,9 @@ import {
   MR_X_DOUBLE,
   MR_X_WON,
   DETECTIVES_WON,
-  EXIT_GAME
+  EXIT_GAME,
+  STOP_SEARCHING,
+  START_SEARCHING
 } from "./constants";
 import { GameboardState } from "./reducers/gameboard";
 import { LobbyData } from "./reducers/lobby";
@@ -49,6 +51,20 @@ export const leaveGame = () => (dispatch: any, getState: any) => {
   const { socket } = getState();
   socket.emit("leave game");
   dispatch({ type: EXIT_GAME });
+};
+
+export const toggleSearch = () => (dispatch: any, getState: any) => {
+  const { lobby, socket } = getState();
+  const { isSearching } = lobby;
+  if (isSearching) {
+    socket.emit("stop searching", (success: boolean) => {
+      if (success) dispatch({ type: STOP_SEARCHING });
+    });
+  } else {
+    socket.emit("start searching", (success: boolean) => {
+      if (success) dispatch({ type: START_SEARCHING });
+    });
+  }
 };
 
 const setupSocket = (dispatch: any, name: string) => {

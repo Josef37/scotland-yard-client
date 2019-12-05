@@ -9,7 +9,7 @@ const PlayerList: React.SFC<PlayerListProps> = ({ heading, names }) => {
   return (
     <div style={{ marginBottom: 30 }}>
       <h3>{heading}</h3>
-      {names.map(name => (
+      {(names.length ? names : [""]).map(name => (
         <span key={name} style={{ margin: "10px 20px" }}>
           {name}
         </span>

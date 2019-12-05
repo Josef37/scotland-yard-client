@@ -1,24 +1,30 @@
-import { LOAD_LOBBY } from "../constants";
+import { LOAD_LOBBY, START_SEARCHING, STOP_SEARCHING } from "../constants";
 import { Action } from "./ActionInterface";
 
 export interface LobbyData {
   players: {
-    playing: Array<string>;
+    pausing: Array<string>;
     searching: Array<string>;
   };
+  isSearching: boolean;
 }
 
 const initialState = {
   players: {
-    playing: [],
+    pausing: [],
     searching: []
-  }
+  },
+  isSearching: false
 };
 
 export const lobby = (state: LobbyData = initialState, action: Action) => {
   switch (action.type) {
     case LOAD_LOBBY:
-      return action.payload;
+      return { ...state, ...action.payload };
+    case START_SEARCHING:
+      return { ...state, isSearching: true };
+    case STOP_SEARCHING:
+      return { ...state, isSearching: false };
     default:
       return state;
   }

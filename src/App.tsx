@@ -5,7 +5,8 @@ import {
   clickStation,
   login,
   selectTicket,
-  leaveGame
+  leaveGame,
+  toggleSearch
 } from "./actions";
 import { useWindowSize } from "./utils/useWindowSizeHook";
 import Gameboard, { GameboardProps } from "./components/Gameboard";
@@ -41,8 +42,13 @@ const App: React.SFC<AppProps> = ({
     case Location.LOGIN:
       return <Login onSubmitLogin={login.onSubmitLogin} />;
     case Location.LOBBY:
-      return <Lobby players={lobby.players} />;
-    case Location.GAME:
+      return (
+        <Lobby
+          players={lobby.players}
+          isSearching={lobby.isSearching}
+          onSearchChange={lobby.onSearchChange}
+        />
+      );
       return (
         <div>
           <Gameboard {...gameboard} height={height} width={width} />
@@ -79,6 +85,9 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
+  lobby: {
+    onSearchChange: () => dispatch(toggleSearch())
+  },
   login: {
     onSubmitLogin: (name: string) => dispatch(login(name))
   },
@@ -94,9 +103,20 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 // merge the nested gameboard property, so dispatch props won't overwrite state props
 const mergeProps = (stateProps: any, dispatchProps: any, ownProps: any) => {
-  return Object.assign({}, ownProps, stateProps, dispatchProps, {
-    gameboard: Object.assign({}, stateProps.gameboard, dispatchProps.gameboard)
-  });
+  return Object.assign(
+    {},
+    ownProps,
+    stateProps,
+    dispatchProps,
+    {
+      gameboard: Object.assign(
+        {},
+        stateProps.gameboard,
+        dispatchProps.gameboard
+      )
+    },
+    { lobby: Object.assign({}, stateProps.lobby, dispatchProps.lobby) }
+  );
 };
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(App);

@@ -12,6 +12,9 @@ export const MR_X_TURN = "MR_X_TURN";
 export const MR_X_WON = "MR_X_WON";
 export const DETECTIVES_WON = "DETECTIVES_WON";
 
+export const START_SEARCHING = "START_SEARCHING";
+export const STOP_SEARCHING = "STOP_SEARCHING";
+
 export enum Location {
   LOGIN,
   LOBBY,
