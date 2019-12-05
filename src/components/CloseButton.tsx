@@ -22,4 +22,4 @@ const CloseButton: React.SFC<CloseButtonProps> = ({ onClose }) => {
   );
 };
 
-export default CloseButton;
+export default React.memo(CloseButton);

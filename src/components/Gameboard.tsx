@@ -5,7 +5,6 @@ import Piece from "./Piece";
 import { IStation, IConnection, IPiece, IMove } from "../reducers/gameboard";
 import TicketSelector from "./TicketSelector";
 import { TicketType } from "../constants";
-import TicketDisplayContainer from "./TicketDisplayContainer";
 
 export interface GameboardProps {
   width: number;
@@ -140,8 +139,6 @@ const Gameboard: React.SFC<GameboardProps> = ({
           />
         );
       })}
-
-      <TicketDisplayContainer pieces={pieces} />
 
       {move.pieceId && move.stationNumber ? (
         <TicketSelector onTicketSelect={onTicketSelect} />

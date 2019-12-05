@@ -10,13 +10,15 @@ import {
 } from "./actions";
 import { useWindowSize } from "./utils/useWindowSizeHook";
 import Gameboard, { GameboardProps } from "./components/Gameboard";
-import { TicketType } from "./constants";
+import { TicketType, START_BUILDER } from "./constants";
 import Login, { LoginProps } from "./components/Login";
 import Lobby, { LobbyProps } from "./components/Lobby";
 import { Location } from "./constants";
 import TicketHistory from "./components/TicketHistory";
 import CloseButton from "./components/CloseButton";
 import TurnIndicator, { TurnIndicatorProps } from "./components/TurnIndicator";
+import GameboardBuilder from "./components/GameboardBuilder";
+import TicketDisplayContainer from "./components/TicketDisplayContainer";
 
 export interface AppProps {
   location: Location;
@@ -42,21 +44,19 @@ const App: React.SFC<AppProps> = ({
     case Location.LOGIN:
       return <Login onSubmitLogin={login.onSubmitLogin} />;
     case Location.LOBBY:
+      return <Lobby {...lobby} />;
+    case Location.GAME:
       return (
-        <Lobby
-          players={lobby.players}
-          isSearching={lobby.isSearching}
-          onSearchChange={lobby.onSearchChange}
-        />
-      );
-      return (
-        <div>
+        <React.Fragment>
           <Gameboard {...gameboard} height={height} width={width} />
           <TurnIndicator {...turn} />
+          <TicketDisplayContainer pieces={gameboard.pieces} />
           <TicketHistory ticketHistory={ticketHistory} />
           {turn.winner ? <CloseButton onClose={leaveGame} /> : null}
-        </div>
+        </React.Fragment>
       );
+    case Location.BUILDER:
+      return <GameboardBuilder />;
     default:
       console.log("Invalid location");
       return <p>Invalid location, please reload</p>;
@@ -86,7 +86,8 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   lobby: {
-    onSearchChange: () => dispatch(toggleSearch())
+    onSearchChange: () => dispatch(toggleSearch()),
+    startBuilder: () => dispatch({ type: START_BUILDER })
   },
   login: {
     onSubmitLogin: (name: string) => dispatch(login(name))

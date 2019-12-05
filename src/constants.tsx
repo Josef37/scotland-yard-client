@@ -11,14 +11,19 @@ export const SET_SOCKET = "SET_SOCKET";
 export const MR_X_TURN = "MR_X_TURN";
 export const MR_X_WON = "MR_X_WON";
 export const DETECTIVES_WON = "DETECTIVES_WON";
-
+export const CREATE_STATION = "CREATE_STATION";
+export const CLICK_STATION_BUILD = "CLICK_STATION_BUILD";
+export const SWITCH_BUILD_MODE = "SWITCH_BUILD_MODE";
+export const EXIT_BUILDER = "EXIT_BUILDER";
+export const START_BUILDER = "START_BUILDER";
 export const START_SEARCHING = "START_SEARCHING";
 export const STOP_SEARCHING = "STOP_SEARCHING";
 
 export enum Location {
   LOGIN,
   LOBBY,
-  GAME
+  GAME,
+  BUILDER
 }
 
 export enum TransportationType {
