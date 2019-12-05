@@ -7,6 +7,12 @@ import {
   EXIT_GAME
 } from "../constants";
 
+export interface TurnState {
+  mrXTurn: boolean;
+  mrXDouble: boolean;
+  winner?: "mrx" | "det";
+}
+
 const initialState = { mrXTurn: true, mrXDouble: false };
 
 export const turn = (state = initialState, action: Action) => {

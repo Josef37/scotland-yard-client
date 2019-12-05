@@ -2,7 +2,7 @@ import * as React from "react";
 import { TransportationType, transportationColors } from "../constants";
 
 export interface ConnectionProps {
-  strokeWidth: number;
+  stationSize: number;
   x1: number;
   y1: number;
   x2: number;
@@ -42,13 +42,15 @@ function getShift(
 }
 
 const Connection: React.SFC<ConnectionProps> = ({
-  strokeWidth,
+  stationSize,
   x1,
   y1,
   x2,
   y2,
   transportationType
 }) => {
+  const strokeWidth = stationSize / 4;
+
   const containerWidth = Math.abs(x1 - x2) + strokeWidth;
   const containerHeight = Math.abs(y1 - y2) + strokeWidth;
   const top = Math.min(y1, y2);

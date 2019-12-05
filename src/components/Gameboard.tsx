@@ -99,7 +99,7 @@ const Gameboard: React.SFC<GameboardProps> = ({
           <Connection
             key={Object.values(connection).join("")}
             {...{ x1, y1, x2, y2 }}
-            strokeWidth={stationSize / 4}
+            stationSize={stationSize}
             transportationType={connection.type}
           />
         );

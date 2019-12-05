@@ -2,11 +2,11 @@ import * as React from "react";
 import { Piece } from "../reducers/dynamicGameboard";
 import TicketDisplay from "./TicketDisplay";
 
-export interface TicketDisplayContainerProps {
+export interface TicketDisplayWrapperProps {
   pieces: Array<Piece>;
 }
 
-const TicketDisplayContainer: React.SFC<TicketDisplayContainerProps> = ({
+const TicketDisplayWrapper: React.SFC<TicketDisplayWrapperProps> = ({
   pieces
 }) => {
   const shiftLeft = 160;
@@ -36,4 +36,4 @@ const TicketDisplayContainer: React.SFC<TicketDisplayContainerProps> = ({
   );
 };
 
-export default TicketDisplayContainer;
+export default TicketDisplayWrapper;

@@ -5,8 +5,8 @@ import "./Station.css";
 export interface StationProps {
   stationTypes: Array<TransportationType>;
   stationNumber: number;
-  x: number;
-  y: number;
+  x: number | string;
+  y: number | string;
   size: number;
   isSelected: boolean;
   onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
@@ -31,7 +31,7 @@ const Station: React.SFC<StationProps> = ({
   const textColor = stationTypes.includes(TransportationType.Underground)
     ? "white"
     : "black";
-  const scale = ((isSelected ? 1.2 : 1) * size) / 200;
+  const scale = ((isSelected ? 1.2 : 1) * size) / 100;
   return (
     <div
       className="outer"
