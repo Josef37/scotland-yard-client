@@ -6,8 +6,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
-  background-color: #111;
   color: white;
+  background-color: #165540;
+  background: no-repeat center / cover url(/Under-the-Lake-100-Vertices.jpeg);
 }
 
 html,
