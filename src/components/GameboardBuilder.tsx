@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IStation, IConnection } from "../reducers/gameboard";
+import { Station, Connection } from "../reducers/staticGameboard";
 import {
   CLICK_STATION_BUILD,
   CREATE_STATION,
@@ -12,8 +12,8 @@ import CloseButton from "./CloseButton";
 import BuildModeController from "./BuildModeController";
 
 export interface GameboardBuilderProps {
-  stations: Array<IStation>;
-  connections: Array<IConnection>;
+  stations: Array<Station>;
+  connections: Array<Connection>;
   startingPositions: { mrX: Array<number>; detective: Array<number> };
   onStationClick: (stationNumber: number) => void;
   onClick: (x: number, y: number) => void;

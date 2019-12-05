@@ -1,9 +1,9 @@
 import * as React from "react";
-import { IPiece } from "../reducers/gameboard";
+import { Piece } from "../reducers/dynamicGameboard";
 import TicketDisplay from "./TicketDisplay";
 
 export interface TicketDisplayContainerProps {
-  pieces: Array<IPiece>;
+  pieces: Array<Piece>;
 }
 
 const TicketDisplayContainer: React.SFC<TicketDisplayContainerProps> = ({

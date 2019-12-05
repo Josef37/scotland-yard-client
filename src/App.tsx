@@ -19,15 +19,19 @@ import CloseButton from "./components/CloseButton";
 import TurnIndicator, { TurnIndicatorProps } from "./components/TurnIndicator";
 import GameboardBuilder from "./components/GameboardBuilder";
 import TicketDisplayContainer from "./components/TicketDisplayContainer";
+import TicketSelector from "./components/TicketSelector";
+import { Move } from "./reducers/dynamicGameboard";
 
 export interface AppProps {
   location: Location;
   login: LoginProps;
   lobby: LobbyProps;
   gameboard: GameboardProps;
+  move: Move;
   ticketHistory: Array<TicketType>;
   turn: TurnIndicatorProps;
   leaveGame: () => void;
+  onTicketSelect: (ticketType: TicketType) => () => void;
 }
 
 const App: React.SFC<AppProps> = ({
@@ -35,9 +39,11 @@ const App: React.SFC<AppProps> = ({
   login,
   lobby,
   gameboard,
+  move,
   ticketHistory,
   turn,
-  leaveGame
+  leaveGame,
+  onTicketSelect
 }) => {
   const [width, height] = useWindowSize();
   switch (location) {
@@ -53,6 +59,9 @@ const App: React.SFC<AppProps> = ({
           <TicketDisplayContainer pieces={gameboard.pieces} />
           <TicketHistory ticketHistory={ticketHistory} />
           {turn.winner ? <CloseButton onClose={leaveGame} /> : null}
+          {move.pieceId && move.stationNumber ? (
+            <TicketSelector onTicketSelect={onTicketSelect} />
+          ) : null}
         </React.Fragment>
       );
     case Location.BUILDER:
@@ -69,13 +78,13 @@ const mapStateToProps = (state: any) => ({
   gameboard: {
     width: window.innerWidth,
     height: window.innerHeight,
-    stations: state.gameboard.stations,
-    connections: state.gameboard.connections,
-    pieces: state.gameboard.pieces,
-    move: state.gameboard.move,
-    ownPieceIds: state.gameboard.ownPieceIds,
+    stations: state.staticGameboard.stations,
+    connections: state.staticGameboard.connections,
+    pieces: state.dynamicGameboard.pieces,
+    move: state.dynamicGameboard.move,
     players: state.lobby
   },
+  move: state.dynamicGameboard.move,
   turn: {
     mrXTurn: state.turn.mrXTurn,
     mrXDouble: state.turn.mrXDouble,
@@ -95,10 +104,10 @@ const mapDispatchToProps = (dispatch: any) => ({
   gameboard: {
     onStationClick: (stationNumber: number) => () =>
       dispatch(clickStation(stationNumber)),
-    onPieceClick: (pieceId: number) => () => dispatch(clickPiece(pieceId)),
-    onTicketSelect: (ticketType: TicketType) => () =>
-      dispatch(selectTicket(ticketType))
+    onPieceClick: (pieceId: number) => () => dispatch(clickPiece(pieceId))
   },
+  onTicketSelect: (ticketType: TicketType) => () =>
+    dispatch(selectTicket(ticketType)),
   leaveGame: () => dispatch(leaveGame())
 });
 

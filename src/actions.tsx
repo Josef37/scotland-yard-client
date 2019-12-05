@@ -14,9 +14,9 @@ import {
   DETECTIVES_WON,
   EXIT_GAME,
   STOP_SEARCHING,
-  START_SEARCHING
+  START_SEARCHING,
+  GameboardApi
 } from "./constants";
-import { GameboardState } from "./reducers/gameboard";
 import { LobbyData } from "./reducers/lobby";
 import { TicketType } from "./constants";
 
@@ -32,8 +32,8 @@ export const selectTicket = (ticketType: TicketType) => (
   dispatch: any,
   getState: any
 ) => {
-  const { socket, gameboard } = getState();
-  const { pieceId, stationNumber } = gameboard.move;
+  const { socket, dynamicGameboard } = getState();
+  const { pieceId, stationNumber } = dynamicGameboard.move;
   if (!pieceId || !stationNumber || !socket) return;
   socket.emit("move", {
     pieceId,
@@ -74,13 +74,17 @@ const setupSocket = (dispatch: any, name: string) => {
     dispatch({ type: LOAD_LOBBY, payload: lobby });
   });
 
-  socket.on("start game", (gameboardState: GameboardState) => {
+  socket.on("start game", (gameboardState: GameboardApi) => {
     // deserialize Ticket map
-    gameboardState.pieces = gameboardState.pieces.map(piece => ({
+    const pieces = gameboardState.pieces.map(piece => ({
       ...piece,
-      tickets: new Map(piece.tickets)
+      tickets: new Map(piece.tickets),
+      isOwn: gameboardState.ownPieceIds.includes(piece.id)
     }));
-    dispatch({ type: START_GAME, payload: { ...gameboardState, move: {} } });
+    dispatch({
+      type: START_GAME,
+      payload: { ...gameboardState, pieces, move: {} }
+    });
   });
 
   socket.on(

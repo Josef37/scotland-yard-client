@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
-import { gameboard } from "./gameboard";
+import { staticGameboard } from "./staticGameboard";
+import { dynamicGameboard } from "./dynamicGameboard";
 import { lobby } from "./lobby";
 import { location } from "./location";
 import { socket } from "./socket";
@@ -8,7 +9,8 @@ import { turn } from "./turn";
 import { builder } from "./builder";
 
 export default combineReducers({
-  gameboard,
+  staticGameboard,
+  dynamicGameboard,
   lobby,
   location,
   socket,

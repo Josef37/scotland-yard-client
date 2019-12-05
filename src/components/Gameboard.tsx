@@ -2,21 +2,21 @@ import * as React from "react";
 import Station from "./Station";
 import Connection from "./Connection";
 import Piece from "./Piece";
-import { IStation, IConnection, IPiece, IMove } from "../reducers/gameboard";
-import TicketSelector from "./TicketSelector";
-import { TicketType } from "../constants";
+import {
+  Station as StationInterface,
+  Connection as ConnectionInterface
+} from "../reducers/staticGameboard";
+import { Move, Piece as PieceInterface } from "../reducers/dynamicGameboard";
 
 export interface GameboardProps {
   width: number;
   height: number;
-  stations: Array<IStation>;
-  connections: Array<IConnection>;
-  pieces: Array<IPiece>;
-  move: IMove;
-  ownPieceIds: Array<number>;
+  stations: Array<StationInterface>;
+  connections: Array<ConnectionInterface>;
+  pieces: Array<PieceInterface>;
+  move: Move;
   onStationClick: (stationNumber: number) => () => void;
   onPieceClick: (pieceId: number) => () => void;
-  onTicketSelect: (ticketType: TicketType) => () => void;
 }
 
 const Gameboard: React.SFC<GameboardProps> = ({
@@ -26,10 +26,8 @@ const Gameboard: React.SFC<GameboardProps> = ({
   connections,
   pieces,
   move,
-  ownPieceIds,
   onStationClick,
-  onPieceClick,
-  onTicketSelect
+  onPieceClick
 }) => {
   function getStation(stationNumber: number) {
     return stations.find(station => station.number === stationNumber);
@@ -134,15 +132,11 @@ const Gameboard: React.SFC<GameboardProps> = ({
             color={piece.color}
             stationSize={stationSize}
             isSelected={piece.id === move.pieceId}
-            isOwnPiece={ownPieceIds.includes(piece.id)}
+            isOwnPiece={piece.isOwn}
             onClick={onPieceClick(piece.id)}
           />
         );
       })}
-
-      {move.pieceId && move.stationNumber ? (
-        <TicketSelector onTicketSelect={onTicketSelect} />
-      ) : null}
     </div>
   );
 };

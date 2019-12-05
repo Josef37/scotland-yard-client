@@ -55,3 +55,24 @@ export const ticketColors = new Map([
   [TicketType.Black, { color: "white", backgroundColor: "#000" }],
   [TicketType.Double, { color: "black", backgroundColor: "lightblue" }]
 ]);
+
+export interface GameboardApi {
+  stations: Array<{ number: number; x: number; y: number }>;
+  connections: Array<{
+    station1Number: number;
+    station2Number: number;
+    type: TransportationType;
+  }>;
+  pieces: Array<PieceApi>;
+  ownPieceIds: Array<number>;
+  mrXTurn: boolean;
+}
+
+interface PieceApi {
+  id: number;
+  stationNumber: number;
+  color: string;
+  tickets: Array<[TicketType, number]>;
+  isMrX: boolean;
+  playerName: string;
+}

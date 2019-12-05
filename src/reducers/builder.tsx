@@ -1,4 +1,4 @@
-import { IStation, IConnection } from "./gameboard";
+import { Station, Connection } from "./staticGameboard";
 import { Action } from "./ActionInterface";
 import {
   CREATE_STATION,
@@ -12,8 +12,8 @@ export type BuildMode =
   | { mode: "startingPosition"; item: "mrx" | "detective" };
 
 interface BuilderState {
-  stations: Array<IStation>;
-  connections: Array<IConnection>;
+  stations: Array<Station>;
+  connections: Array<Connection>;
   startingPositions: { mrX: Array<number>; detective: Array<number> };
   buildMode: BuildMode;
   selectedStation?: number;
@@ -44,7 +44,7 @@ export const builder = (state = initialState, action: Action) => {
         case "connection": {
           if (!state.selectedStation)
             return { ...state, selectedStation: action.payload };
-          const connection: IConnection = {
+          const connection: Connection = {
             station1Number: state.selectedStation,
             station2Number: stationNumber,
             type: state.buildMode.item
