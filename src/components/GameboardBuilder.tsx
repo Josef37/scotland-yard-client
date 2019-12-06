@@ -1,21 +1,20 @@
 import * as React from "react";
 import { Station, Connection } from "../reducers/staticGameboard";
-import {
-  CLICK_STATION_BUILD,
-  CREATE_STATION,
-  SWITCH_BUILD_MODE,
-  EXIT_BUILDER
-} from "../constants";
 import { BuildMode } from "../reducers/builder";
-import { connect } from "react-redux";
 import CloseButton from "./CloseButton";
 import BuildModeController from "./BuildModeController";
+import Gameboard from "./Gameboard";
+import { Piece } from "../reducers/dynamicGameboard";
+import { ConnectionProps } from "./Connection";
+import { StationProps } from "./Station";
+import { translateStations } from "../selectors/gameboard";
+import { useWindowSize } from "../utils/useWindowSizeHook";
 
 export interface GameboardBuilderProps {
   stations: Array<Station>;
   connections: Array<Connection>;
   startingPositions: { mrX: Array<number>; detective: Array<number> };
-  onStationClick: (stationNumber: number) => void;
+  onStationClick: (stationNumber: number) => (event: React.MouseEvent) => void;
   onClick: (x: number, y: number) => void;
   onBuildModeSwitch: (mode: BuildMode) => void;
   onSubmit: () => void;
@@ -32,8 +31,52 @@ const GameboardBuilder: React.SFC<GameboardBuilderProps> = ({
   onSubmit,
   onExit
 }) => {
+  const mrXPieces = startingPositions.mrX.map(
+    (stationNumber, index): Piece => ({
+      id: index,
+      stationNumber,
+      color: "black",
+      tickets: new Map(),
+      isMrX: true,
+      playerName: "Mr. X",
+      isOwn: false
+    })
+  );
+  const detectivePieces = startingPositions.detective.map(
+    (stationNumber, index): Piece => ({
+      id: index + startingPositions.mrX.length,
+      stationNumber,
+      color: "blue",
+      tickets: new Map(),
+      isMrX: false,
+      playerName: "Detective",
+      isOwn: false
+    })
+  );
+  const pieces = mrXPieces.concat(detectivePieces);
+
+  const [width, height] = useWindowSize();
+
+  stations = translateStations(stations, width, height, {
+    top: 0,
+    right: width,
+    bottom: height,
+    left: 0
+  });
+
   return (
     <React.Fragment>
+      <Gameboard
+        width={width}
+        height={height}
+        stations={stations}
+        connections={connections}
+        pieces={pieces}
+        move={{}}
+        onStationClick={onStationClick}
+        onPieceClick={() => () => {}}
+        onBoardClick={event => onClick(event.clientX, event.clientY)}
+      />
       <BuildModeController
         onBuildModeSwitch={onBuildModeSwitch}
         onSubmit={onSubmit}
@@ -43,20 +86,4 @@ const GameboardBuilder: React.SFC<GameboardBuilderProps> = ({
   );
 };
 
-const mapStateToProps = (state: any) => ({
-  stations: state.builder.stations,
-  connections: state.builder.connections,
-  startingPositions: state.builder.startingPositions
-});
-const mapDispatchToProps = (dispatch: any) => ({
-  onStationClick: (stationNumber: number) =>
-    dispatch({ type: CLICK_STATION_BUILD, payload: stationNumber }),
-  onClick: (x: number, y: number) =>
-    dispatch({ type: CREATE_STATION, payload: { x, y } }),
-  onBuildModeSwitch: (mode: BuildMode) =>
-    dispatch({ type: SWITCH_BUILD_MODE, payload: mode }),
-  onSubmit: () => console.log("submit gameboard"),
-  onExit: () => dispatch({ type: EXIT_BUILDER })
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(GameboardBuilder);
+export default GameboardBuilder;

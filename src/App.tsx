@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { leaveGame } from "./actions";
 import { Location } from "./constants";
 import CloseButton from "./components/CloseButton";
-import GameboardBuilder from "./components/GameboardBuilder";
 import GameboardContainer from "./containers/GameboardContainer";
 import LoginContainer from "./containers/LoginContainer";
 import LobbyContainer from "./containers/LobbyContainer";
@@ -11,6 +10,7 @@ import TicketDisplayContainer from "./containers/TicketDisplayContainer";
 import TicketHistoryContainer from "./containers/TicketHistoryContainer";
 import TurnIndicatorContainer from "./containers/TurnIndicatorContainer";
 import TicketSelectorContainer from "./containers/TicketSelectorContainer";
+import GameboardBuilderContainer from "./containers/GameboardBuilderContainer";
 
 export interface AppProps {
   location: Location;
@@ -36,7 +36,7 @@ const App: React.SFC<AppProps> = ({ location, hideCloseButton, leaveGame }) => {
         </React.Fragment>
       );
     case Location.BUILDER:
-      return <GameboardBuilder />;
+      return <GameboardBuilderContainer />;
     default:
       console.log("Invalid location");
       return <p>Invalid location, please reload</p>;

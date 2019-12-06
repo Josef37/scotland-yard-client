@@ -3,9 +3,16 @@ import Gameboard, { GameboardProps } from "../components/Gameboard";
 import { connect } from "react-redux";
 import { clickStation, clickPiece } from "../actions";
 import { useWindowSize } from "../utils/useWindowSizeHook";
+import { translateStations, getBoundingBox } from "../selectors/gameboard";
 
 const GameboardContainer: React.SFC<GameboardProps> = props => {
   const [width, height] = useWindowSize();
+  props.stations = translateStations(
+    props.stations,
+    width,
+    height,
+    getBoundingBox(props.stations)
+  );
   props = { ...props, width, height };
   return <Gameboard {...props} />;
 };

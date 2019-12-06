@@ -15,8 +15,9 @@ export interface GameboardProps {
   connections: Array<ConnectionInterface>;
   pieces: Array<PieceInterface>;
   move: Move;
-  onStationClick: (stationNumber: number) => () => void;
-  onPieceClick: (pieceId: number) => () => void;
+  onStationClick: (stationNumber: number) => (event: React.MouseEvent) => void;
+  onPieceClick: (pieceId: number) => (event: React.MouseEvent) => void;
+  onBoardClick?: (event: React.MouseEvent) => void;
 }
 
 const Gameboard: React.SFC<GameboardProps> = ({
@@ -27,7 +28,8 @@ const Gameboard: React.SFC<GameboardProps> = ({
   pieces,
   move,
   onStationClick,
-  onPieceClick
+  onPieceClick,
+  onBoardClick
 }) => {
   function getStation(stationNumber: number) {
     return stations.find(station => station.number === stationNumber);
@@ -43,39 +45,8 @@ const Gameboard: React.SFC<GameboardProps> = ({
       .map(connection => connection.type);
   }
 
-  const boundingBox = stations.reduce(
-    (box, station) => ({
-      top: Math.min(box.top, station.y),
-      right: Math.max(box.right, station.x),
-      bottom: Math.max(box.bottom, station.y),
-      left: Math.min(box.left, station.x)
-    }),
-    {
-      top: Infinity,
-      right: -Infinity,
-      bottom: -Infinity,
-      left: Infinity
-    }
-  );
-
-  const stationSize = (width + height) / 2 / (Math.sqrt(stations.length) * 4);
-  const padding = 2 * stationSize;
-
-  stations = stations.map(station => {
-    return {
-      ...station,
-      x:
-        ((station.x - boundingBox.left) /
-          (boundingBox.right - boundingBox.left)) *
-          (width - 2 * padding) +
-        padding,
-      y:
-        ((station.y - boundingBox.top) /
-          (boundingBox.bottom - boundingBox.top)) *
-          (height - 2 * padding) +
-        padding
-    };
-  });
+  // const stationSize = (width + height) / 2 / (Math.sqrt(stations.length) * 4);
+  const stationSize = Math.sqrt((width * height) / (5 * stations.length));
 
   return (
     <div
@@ -84,26 +55,35 @@ const Gameboard: React.SFC<GameboardProps> = ({
         height,
         position: "relative"
       }}
+      onClick={onBoardClick}
     >
-      {connections.map(connection => {
-        let [station1Number, station2Number] = [
-          connection.station1Number,
-          connection.station2Number
-        ].sort((a, b) => a - b);
-        let station1 = getStation(station1Number);
-        let station2 = getStation(station2Number);
-        if (!station1 || !station2) return null;
-        let { x: x1, y: y1 } = station1;
-        let { x: x2, y: y2 } = station2;
-        return (
-          <Connection
-            key={Object.values(connection).join("")}
-            {...{ x1, y1, x2, y2 }}
-            stationSize={stationSize}
-            transportationType={connection.type}
-          />
-        );
-      })}
+      {connections
+        .map(connection => {
+          let [station1Number, station2Number] = [
+            connection.station1Number,
+            connection.station2Number
+          ].sort((a, b) => a - b);
+          let station1 = getStation(station1Number);
+          let station2 = getStation(station2Number);
+          return { ...connection, station1, station2 };
+        })
+        .filter(({ station1, station2 }) => station1 && station2)
+        .map(connection => {
+          let { x: x1, y: y1 } = connection.station1!; // See filter
+          let { x: x2, y: y2 } = connection.station2!;
+          return (
+            <Connection
+              key={[
+                connection.station1Number,
+                connection.station2Number,
+                connection.type
+              ].join("-")}
+              {...{ x1, y1, x2, y2 }}
+              stationSize={stationSize}
+              transportationType={connection.type}
+            />
+          );
+        })}
 
       {stations.map(station => {
         return (

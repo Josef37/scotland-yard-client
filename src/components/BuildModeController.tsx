@@ -21,6 +21,7 @@ const BuildModeController: React.SFC<BuildModeControllerProps> = ({
         // alignItems: "flex-start",
         justifyContent: "center",
         position: "absolute",
+        top: 0,
         right: 0,
         marginRight: 30,
         textAlign: "center"
