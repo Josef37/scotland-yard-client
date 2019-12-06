@@ -15,7 +15,8 @@ import {
   EXIT_GAME,
   STOP_SEARCHING,
   START_SEARCHING,
-  GameboardApi
+  GameboardApi,
+  SUBMISSION_SUCCESSFUL
 } from "./constants";
 import { LobbyData } from "./reducers/lobby";
 import { TicketType } from "./constants";
@@ -65,6 +66,20 @@ export const toggleSearch = () => (dispatch: any, getState: any) => {
       if (success) dispatch({ type: START_SEARCHING });
     });
   }
+};
+
+export const submitGameboard = () => (dispatch: any, getState: any) => {
+  const { builder, socket } = getState();
+  const { stations, connections, startingPositions } = builder;
+  socket.emit(
+    "submit gameboard",
+    stations,
+    connections,
+    startingPositions,
+    (success: boolean) => {
+      if (success) dispatch({ type: SUBMISSION_SUCCESSFUL });
+    }
+  );
 };
 
 const setupSocket = (dispatch: any, name: string) => {

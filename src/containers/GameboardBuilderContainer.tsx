@@ -10,6 +10,7 @@ import {
   EXIT_BUILDER
 } from "../constants";
 import { BuildMode } from "../reducers/builder";
+import { submitGameboard } from "../actions";
 
 const GameboardBuilderContainer: React.SFC<GameboardBuilderProps> = props => {
   return <GameboardBuilder {...props} />;
@@ -18,7 +19,8 @@ const GameboardBuilderContainer: React.SFC<GameboardBuilderProps> = props => {
 const mapStateToProps = (state: any) => ({
   stations: state.builder.stations,
   connections: state.builder.connections,
-  startingPositions: state.builder.startingPositions
+  startingPositions: state.builder.startingPositions,
+  saved: state.builder.saved
 });
 const mapDispatchToProps = (dispatch: any) => ({
   onStationClick: (stationNumber: number) => (event: React.MouseEvent) => {
@@ -29,7 +31,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch({ type: CREATE_STATION, payload: { x, y } }),
   onBuildModeSwitch: (mode: BuildMode) =>
     dispatch({ type: SWITCH_BUILD_MODE, payload: mode }),
-  onSubmit: () => console.log("submit gameboard"),
+  onSubmit: () => dispatch(submitGameboard()),
   onExit: () => dispatch({ type: EXIT_BUILDER })
 });
 

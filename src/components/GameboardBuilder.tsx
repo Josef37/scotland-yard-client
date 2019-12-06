@@ -5,8 +5,6 @@ import CloseButton from "./CloseButton";
 import BuildModeController from "./BuildModeController";
 import Gameboard from "./Gameboard";
 import { Piece } from "../reducers/dynamicGameboard";
-import { ConnectionProps } from "./Connection";
-import { StationProps } from "./Station";
 import { translateStations } from "../selectors/gameboard";
 import { useWindowSize } from "../utils/useWindowSizeHook";
 
@@ -14,6 +12,7 @@ export interface GameboardBuilderProps {
   stations: Array<Station>;
   connections: Array<Connection>;
   startingPositions: { mrX: Array<number>; detective: Array<number> };
+  saved: boolean;
   onStationClick: (stationNumber: number) => (event: React.MouseEvent) => void;
   onClick: (x: number, y: number) => void;
   onBuildModeSwitch: (mode: BuildMode) => void;
@@ -25,6 +24,7 @@ const GameboardBuilder: React.SFC<GameboardBuilderProps> = ({
   stations,
   connections,
   startingPositions,
+  saved,
   onStationClick,
   onClick,
   onBuildModeSwitch,
@@ -78,6 +78,7 @@ const GameboardBuilder: React.SFC<GameboardBuilderProps> = ({
         onBoardClick={event => onClick(event.clientX, event.clientY)}
       />
       <BuildModeController
+        saved={saved}
         onBuildModeSwitch={onBuildModeSwitch}
         onSubmit={onSubmit}
       />

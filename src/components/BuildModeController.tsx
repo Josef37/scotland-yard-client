@@ -3,11 +3,13 @@ import { BuildMode } from "../reducers/builder";
 import { TransportationType, transportationColors } from "../constants";
 
 export interface BuildModeControllerProps {
+  saved: boolean;
   onBuildModeSwitch: (mode: BuildMode) => void;
   onSubmit: () => void;
 }
 
 const BuildModeController: React.SFC<BuildModeControllerProps> = ({
+  saved,
   onBuildModeSwitch,
   onSubmit
 }) => {
@@ -52,16 +54,17 @@ const BuildModeController: React.SFC<BuildModeControllerProps> = ({
         text="Detective"
       />
       <h3
-        onClick={onSubmit}
+        onClick={() => saved || onSubmit()}
         style={{
           textTransform: "uppercase",
           border: "2px solid",
           padding: "1rem",
           marginTop: "3rem",
-          background: "rgba(255,255,255,0.2)"
+          background: "rgba(255,255,255,0.2)",
+          cursor: saved ? "default" : "pointer"
         }}
       >
-        Submit changes
+        {saved ? "Changes saved" : "Submit changes"}
       </h3>
     </div>
   );

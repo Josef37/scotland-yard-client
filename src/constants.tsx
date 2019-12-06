@@ -18,6 +18,7 @@ export const EXIT_BUILDER = "EXIT_BUILDER";
 export const START_BUILDER = "START_BUILDER";
 export const START_SEARCHING = "START_SEARCHING";
 export const STOP_SEARCHING = "STOP_SEARCHING";
+export const SUBMISSION_SUCCESSFUL = "SUBMISSION_SUCCESSFUL";
 
 export enum Location {
   LOGIN,

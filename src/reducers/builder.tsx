@@ -4,7 +4,8 @@ import {
   CREATE_STATION,
   CLICK_STATION_BUILD,
   SWITCH_BUILD_MODE,
-  TransportationType
+  TransportationType,
+  SUBMISSION_SUCCESSFUL
 } from "../constants";
 
 export type BuildMode =
@@ -17,13 +18,15 @@ interface BuilderState {
   startingPositions: { mrX: Array<number>; detective: Array<number> };
   buildMode: BuildMode;
   selectedStation?: number;
+  saved: boolean;
 }
 
 const initialState: BuilderState = {
   stations: [],
   connections: [],
   startingPositions: { mrX: [], detective: [] },
-  buildMode: { mode: "connection", item: TransportationType.Taxi }
+  buildMode: { mode: "connection", item: TransportationType.Taxi },
+  saved: false
 };
 
 export const builder = (state = initialState, action: Action) => {
@@ -36,7 +39,8 @@ export const builder = (state = initialState, action: Action) => {
           number: state.stations.length + 1,
           x,
           y
-        })
+        }),
+        saved: false
       };
     case CLICK_STATION_BUILD:
       const stationNumber = action.payload;
@@ -52,7 +56,8 @@ export const builder = (state = initialState, action: Action) => {
           return {
             ...state,
             selectedStation: undefined,
-            connections: state.connections.concat(connection)
+            connections: state.connections.concat(connection),
+            saved: false
           };
         }
         case "startingPosition": {
@@ -61,13 +66,19 @@ export const builder = (state = initialState, action: Action) => {
             state.buildMode.item === "mrx"
               ? { mrX: mrX.concat(stationNumber), detective }
               : { mrX, detective: detective.concat(stationNumber) };
-          return { ...state, startingPositions: newStartingPositions };
+          return {
+            ...state,
+            startingPositions: newStartingPositions,
+            saved: false
+          };
         }
         default:
           return state;
       }
     case SWITCH_BUILD_MODE:
       return { ...state, buildMode: action.payload };
+    case SUBMISSION_SUCCESSFUL:
+      return { ...state, saved: true };
     default:
       return state;
   }
