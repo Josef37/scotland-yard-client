@@ -1,3 +1,7 @@
+## Warning!
+
+It is broken! The client was built with an older version of React and I would have to rewrite it, in order to make it work again. Maybe I'll do it, when it has any value.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
